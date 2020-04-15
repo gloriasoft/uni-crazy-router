@@ -1,0 +1,44 @@
+{
+  "name": "uni-crazy-router",
+  "version": "0.0.3",
+  "description": "一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子",
+  "main": "./dist/uni_crazy_router.umd.js",
+  "scripts": {
+    "build": "cross-env BABEL_ENV=rollup rollup -c && node customBuild.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devilwjp/uni-crazy-router.git"
+  },
+  "author": "devilwjp(天堂里的花大咩)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/devilwjp/uni-crazy-router/issues"
+  },
+  "homepage": "https://github.com/devilwjp/uni-crazy-router#readme",
+  "dependencies": {
+    "regenerator-runtime": "^0.13.5",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/plugin-external-helpers": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.7.4",
+    "babel-preset-latest": "^6.24.1",
+    "cross-env": "^6.0.3",
+    "fs-extra": "^9.0.0",
+    "rollup": "^1.27.5",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-uglify": "^6.0.3"
+  }
+}
