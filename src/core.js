@@ -115,6 +115,13 @@ async function getAsyncResult (result, to, from) {
  * @returns {*}
  */
 export function intercept (nativeFun, payload, jumpType) {
+    // 判断是否能获取到页面栈
+    try {
+        getNowUrl()
+    } catch(e) {
+        return nativeFun.call(uni, payload)
+    }
+
     let {fail, success, complete} = payload
     // 防抖
     if (!routerStatus.allowAction) {
@@ -167,8 +174,8 @@ export function intercept (nativeFun, payload, jumpType) {
                 callAfterNotNext()
                 return
             }
-            nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
             waitJumpSucc = true
+            nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
         })()
         return
     }
@@ -183,8 +190,8 @@ export function intercept (nativeFun, payload, jumpType) {
                 errMsg:'beforeEach中没有使用next'
             }]
         }
-        const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
         waitJumpSucc = true
+        const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
         return getAsyncResult (result, to, routerStatus.current)
     })()
 }
@@ -254,9 +261,9 @@ export function bootstrap (Vue, options) {
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
         },
         onShow () {
-            let nowUrl
-            try{
-                nowUrl = getNowUrl()
+            // 判断是否能获取到页面栈
+            try {
+                getNowUrl()
             } catch(e) {
                 return
             }
