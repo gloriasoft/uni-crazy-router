@@ -8,7 +8,7 @@
 + 完全使用uni-app自身的钩子和属性实现，不耦合于vue的组件，更不依赖vue-router  
 + beforeEach可以异步拦截路由的跳转
 + 新增路由级别的params参数，不耦合于uni-app自身的页面参数  
-+ 对页面跳转进行了防抖防刷新的处理，避免了小程序可以点击触发窗口的问题  
++ 对页面跳转进行了防抖防刷新的处理，避免了小程序可以连续疯狂点击触发窗口的问题  
 ___
 ## 安装  
 ```
@@ -85,8 +85,8 @@ uni.switchTab
 uni.navigateBack**  
   
 #### 新增参数  
-routeParams {Object} 路由触发的页面参数，在页面加载后将一直存在并且不再改变  
-passedParams {Object}  路由触发的过程参数，每次通过主动触发路由的改变，就会被修改  
++ routeParams {Object} 路由触发的页面参数，在页面加载后将一直存在并且不再改变  
++ passedParams {Object}  路由触发的过程参数，每次通过主动触发路由的改变，就会被修改  
 routeParams和passedParams的值可以在页面vue实例中通过$routeParams和$passedParams获取，也可以通过getCurrentPages()获取到页面栈中的页面对象，对象中同样存在$routeParams和$passedParams
 ```javascript
 // vue instance
@@ -103,9 +103,9 @@ console.log(currentPage.$passedParams)
   
 ### 钩子函数与拦截器  
 钩子函数和拦截器与vue-router的使用方式雷同，开放了三个钩子  
-**beforeEach (hookFunction)  
-afterEach (hookFunction)  
-onError (hookFunction)**  
++ **beforeEach (hookFunction)  
++ afterEach (hookFunction)  
++ onError (hookFunction)**  
 其中beforeEach有拦截功能，通过next方法来控制  
 beforeEach只能拦截主动的路由切换（由路由切换API触发）  
 被动触发行为不会经过beforeEach，包括：  
