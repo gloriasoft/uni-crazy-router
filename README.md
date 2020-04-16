@@ -1,6 +1,10 @@
 # uni-crazy-router  
 一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子
     
+___
+## 注意  
+由于条件限制，仅在H5环境和微信小程序环境进行过测试
+___
 ## 优势  
 + uni-crazy-router是一个Vue的插件，安装和使用方便，是一个非常轻量级的路由插件  
 + 不需要配置路由表  
