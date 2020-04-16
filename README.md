@@ -12,8 +12,8 @@ ___
 + 完全使用uni-app自身的钩子和属性实现，不耦合于vue的组件，更不依赖vue-router  
 + beforeEach可以异步拦截路由的跳转
 + 新增路由级别的params参数，不耦合于uni-app自身的页面参数  
-+ 对页面跳转进行了防抖防刷新的处理，避免了小程序可以连续疯狂点击触发窗口的问题  
-___
++ 对页面跳转进行了防抖防刷新的处理，避免了小程序可以连续疯狂点击触发窗口的问题
+     
 ## 安装  
 ```
 npm i uni-crazy-router -S
@@ -25,19 +25,13 @@ uni-app项目 src/main.js
 ```javascript
 import Vue from 'vue'
 import App from './App'
-
-// 引入路由文件
-import './router'
-
+import './router' // 引入路由
 Vue.config.productionTip = false
-
 App.mpType = 'app'
-
 const app = new Vue({
   ...App
 })
 app.$mount()
-
 ```  
   
 ### 第二步  
@@ -79,6 +73,37 @@ uni.navigateTo({
     }
 })
 ```  
+  
+### 第四步  
+在页面中获取相关信息  
+```javascript
+export default {
+    data() {
+        return {
+            title: 'Hello'
+        }
+    },
+    onLoad() {
+        // 获取页面路由
+        // uni-app官方推荐方式，适用所有端
+        console.log(getCurrentPages()[getCurrentPages().length-1].route)
+    },
+    onShow() {
+        // 获取路由页面参数
+        console.log(this.$routeParams)
+        console.log(getCurrentPages()[getCurrentPages().length-1].$routeParams)
+        // 获取路由动作过程参数
+        console.log(this.$passedParams)
+        console.log(getCurrentPages()[getCurrentPages().length-1].$passedParams)
+    },
+    onUnload() {
+       
+    },
+    methods: {
+        //....
+    }
+}
+```
 ___
 ## API  
 ### 路由切换的API（原生）  
@@ -91,19 +116,7 @@ uni.navigateBack**
 #### 新增参数  
 + routeParams {Object} 路由触发的页面参数，在页面加载后将一直存在并且不再改变  
 + passedParams {Object}  路由触发的过程参数，每次通过主动触发路由的改变，就会被修改  
-routeParams和passedParams的值可以在页面vue实例中通过$routeParams和$passedParams获取，也可以通过getCurrentPages()获取到页面栈中的页面对象，对象中同样存在$routeParams和$passedParams
-```javascript
-// vue instance
-onShow () {
-   console.log(this.$routeParams)
-   console.log(this.$passedParams)
-}
-
-// page stacks
-let currentPage = getCurrentPages()[getCurrentPages().length-1]
-console.log(currentPage.$routeParams)
-console.log(currentPage.$passedParams)
-```
+routeParams和passedParams的值可以在页面vue实例中通过$routeParams和$passedParams获取(比如this.$routeParams)，也可以通过getCurrentPages()获取到页面栈中的页面对象，对象中同样存在$routeParams和$passedParams
   
 ### 钩子函数与拦截器  
 钩子函数和拦截器与vue-router的使用方式雷同，开放了三个钩子  
@@ -117,14 +130,15 @@ beforeEach只能拦截主动的路由切换（由路由切换API触发）
 + 小程序的navigator组件触发  
 + 小程序的返回首页按钮  
 + 小程序的tabbar按钮  
-+ 浏览器的前进后退按钮  
++ 浏览器的前进后退按钮
+  
 #### 参数   
 hookFunction {Function}
 + to  {Object} {url, routeParams, passedParams, jumpType}  
 其中jumpType只有在beforeEach中出现，用于标识主动触发的类型（原生方法名）
 + from  {Object} {url, routeParams, passedParams}
-+ next  {Function} 只有beforeEach才有  
-
++ next  {Function} 只有beforeEach才有
+  
 ### 拦截后的附加执行函数  
 **afterNotNext (hookFunction)**  
 afterNotNext只对当前函数上下文有效  
