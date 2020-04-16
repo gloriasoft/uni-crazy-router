@@ -120,7 +120,8 @@ beforeEach只能拦截主动的路由切换（由路由切换API触发）
 + 浏览器的前进后退按钮  
 #### 参数   
 hookFunction {Function}
-+ to  {Object} {url, routeParams, passedParams}
++ to  {Object} {url, routeParams, passedParams, jumpType}  
+其中jumpType只有在beforeEach中出现，用于标识主动触发的类型（原生方法名）
 + from  {Object} {url, routeParams, passedParams}
 + next  {Function} 只有beforeEach才有  
 

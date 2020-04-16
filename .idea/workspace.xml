@@ -42,16 +42,16 @@
         <counts>
           <entry key="babelrc" value="4" />
           <entry key="gitignore" value="8" />
-          <entry key="js" value="540" />
+          <entry key="js" value="574" />
           <entry key="json" value="194" />
-          <entry key="md" value="2336" />
+          <entry key="md" value="2419" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="198" />
-          <entry key="JavaScript" value="572" />
-          <entry key="Markdown" value="2304" />
+          <entry key="JavaScript" value="606" />
+          <entry key="Markdown" value="2387" />
           <entry key="PLAIN_TEXT" value="8" />
         </counts>
       </usages-collector>
@@ -62,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
+            <state relative-caret-position="3336">
+              <caret line="213" column="9" selection-start-line="213" selection-start-column="9" selection-end-line="213" selection-end-column="9" />
               <folding>
                 <element signature="e#0#76#0" expanded="true" />
               </folding>
@@ -83,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+            <state relative-caret-position="322">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
@@ -102,8 +102,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="138">
-                <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+              <first_editor relative-caret-position="690">
+                <caret line="123" column="44" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
                 <folding>
                   <element signature="e#0#21#0" expanded="true" />
                   <element signature="e#0#21#0" expanded="true" />
@@ -151,8 +151,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/storage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="713">
-              <caret line="31" column="26" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="26" />
+            <state relative-caret-position="299">
+              <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -177,6 +177,9 @@
       <find>url</find>
       <find>afterNot</find>
       <find>callAfterNotNext</find>
+      <find>getParams</find>
+      <find>jumpType</find>
+      <find>to</find>
     </findStrings>
     <dirStrings>
       <dir>E:\git\uni-crazy-router\node_modules</dir>
@@ -192,9 +195,10 @@
         <option value="$PROJECT_DIR$/dist/uni_crazy_router.umd.js" />
         <option value="$PROJECT_DIR$/customBuild.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/src/core.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/core.js" />
+        <option value="$PROJECT_DIR$/src/storage.js" />
         <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
@@ -288,18 +292,18 @@
       <option name="presentableId" value="Default" />
       <updated>1586751164011</updated>
       <workItem from="1586751167619" duration="55000" />
-      <workItem from="1586968415930" duration="15870000" />
+      <workItem from="1586968415930" duration="17052000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="15925000" />
+    <option name="totallyTimeSpent" value="17107000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2166" y="-2022" width="972" height="1689" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21831736" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15548456" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -355,13 +359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/storage.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="713">
-          <caret line="31" column="26" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -379,16 +376,6 @@
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#64#112#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="26" column="58" selection-start-line="26" selection-start-column="58" selection-end-line="26" selection-end-column="58" />
-          <folding>
-            <element signature="e#0#76#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -416,16 +403,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/storage.js">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
-          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+          <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3336">
+          <caret line="213" column="9" selection-start-line="213" selection-start-column="9" selection-end-line="213" selection-end-column="9" />
+          <folding>
+            <element signature="e#0#76#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="138">
-            <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+          <first_editor relative-caret-position="690">
+            <caret line="123" column="44" selection-start-line="123" selection-start-column="44" selection-end-line="123" selection-end-column="44" />
             <folding>
               <element signature="e#0#21#0" expanded="true" />
               <element signature="e#0#21#0" expanded="true" />
