@@ -127,6 +127,7 @@ hookFunction {Function}
 
 ### 拦截后的附加执行函数  
 **afterNotNext (hookFunction)**  
+afterNotNext只对当前函数上下文有效  
 #### 参数  
 hookFunction {Function} 在beforeEach被拦截后同步执行  
 用在beforeEach拦截中，当遇到没有next的场景，会在拦截动作之后同步的触发传入的函数  
