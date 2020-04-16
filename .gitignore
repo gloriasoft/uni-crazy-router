@@ -1,0 +1,14 @@
+build
+node_modules/
+.sass-cache/
+.tmp/
+/dist
+*bundle.js
+./idea
+.vscode/
+npm-debug.log
+src-1
+package-lock.json
+.DS_Store
+.history
+.idea/
