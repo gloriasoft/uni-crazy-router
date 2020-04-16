@@ -107,6 +107,13 @@ console.log(currentPage.$passedParams)
 afterEach (hookFunction)  
 onError (hookFunction)**  
 其中beforeEach有拦截功能，通过next方法来控制  
+beforeEach只能拦截主动的路由切换（由路由切换API触发）  
+被动触发行为不会经过beforeEach，包括：  
++ 小程序的原生返回按钮触发  
++ 小程序的navigator组件触发  
++ 小程序的返回首页按钮  
++ 小程序的tabbar按钮  
++ 浏览器的前进后退按钮  
 #### 参数   
 hookFunction {Function}
 + to  {Object} {url, routeParams, passedParams}
