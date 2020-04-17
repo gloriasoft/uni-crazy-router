@@ -93,13 +93,19 @@ function callAfterNotNext () {
  * @param from
  * @returns {Promise<*>}
  */
-async function getAsyncResult (result, to, from) {
+async function getAsyncResult (result, to, from, jumpType) {
     try {
         let newResult = await result
         if (newResult.length === 1) {
             // 失败时重置防抖
             routerStatus.allowAction = true
             callWithoutNext(onErrorFn, to, from)
+        } else {
+            // 对navigateBack的特殊处理
+            if (jumpType === 'navigateBack' && getCurrentPages().length === 1) {
+                watchAllowAction()
+                callWithoutNext(afterEachFn, to, from)
+            }
         }
         return newResult
     } catch(e) {
@@ -114,7 +120,7 @@ async function getAsyncResult (result, to, from) {
  * @param jumpType {String} 原生方法名
  * @returns {*}
  */
-export function intercept (nativeFun, payload, jumpType) {
+export function intercept (nativeFun, payload={}, jumpType) {
     // 判断是否能获取到页面栈
     try {
         getNowUrl()
@@ -165,6 +171,17 @@ export function intercept (nativeFun, payload, jumpType) {
             }
         }
 
+        // 对navigateBack的特殊处理
+        if (jumpType === 'navigateBack' && getCurrentPages().length === 1) {
+            payload.success = (...params) => {
+                watchAllowAction()
+                callWithoutNext(afterEachFn, to, routerStatus.current)
+                if (success) {
+                    return success.apply(this, params)
+                }
+            }
+        }
+
         // 自执行一个async函数
         (async function () {
             if (!await callWithNext(beforeEachFn, to, routerStatus.current)) {
@@ -192,7 +209,7 @@ export function intercept (nativeFun, payload, jumpType) {
         }
         waitJumpSucc = true
         const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
-        return getAsyncResult (result, to, routerStatus.current)
+        return getAsyncResult (result, to, routerStatus.current, jumpType)
     })()
 }
 
