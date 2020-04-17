@@ -147,7 +147,7 @@ afterNotNext只对当前函数上下文有效
 #### 参数  
 hookFunction {Function} 在beforeEach被拦截后同步执行  
 用在beforeEach拦截中，当遇到没有next的场景，会在拦截动作之后同步的触发传入的函数  
-因为uni-crazy-router做了防抖重复动作拦截，所以如果想在before里使用路由跳转动作，需要包装在afterNodeNext里  
+因为uni-crazy-router做了防抖重复动作拦截，所以如果想在before里使用路由跳转动作，需要包装在afterNotNext里  
 ```javascript
 uniCrazyRouter.beforeEach(async (to, from ,next)=>{
     if (to.passedParams && to.passedParams.stop) {
