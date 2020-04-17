@@ -1,6 +1,9 @@
 import {afterEachFn, beforeEachFn, onErrorFn, routerStatus} from "./storage"
 import url from "url"
 
+// 环境判断 用于app端的特殊处理
+const env = process.env.VUE_APP_PLATFORM
+
 // 内部防抖开关
 let waitJumpSucc = false
 
@@ -101,10 +104,22 @@ async function getAsyncResult (result, to, from, jumpType) {
             routerStatus.allowAction = true
             callWithoutNext(onErrorFn, to, from)
         } else {
-            // 对navigateBack的特殊处理
-            if (jumpType === 'navigateBack' && getCurrentPages().length === 1) {
+            // 对navigateBack的特殊处理 或 app-plus
+            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
                 watchAllowAction()
-                callWithoutNext(afterEachFn, to, from)
+                let page = getNowPage()
+                page.$passedParams = getParams('passedParams')
+                page.$routeParams = getParams('routeParams')
+                if (page.$vm) {
+                    page.$vm.$passedParams = page.$passedParams
+                    page.$vm.$routeParams = page.$routeParams
+                }
+
+                // 执行afterEach
+                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                routerStatus.current = getNowRoute()
+                // watchAllowAction()
+                // callWithoutNext(afterEachFn, to, from)
             }
         }
         return newResult
@@ -171,11 +186,22 @@ export function intercept (nativeFun, payload={}, jumpType) {
             }
         }
 
-        // 对navigateBack的特殊处理
-        if (jumpType === 'navigateBack' && getCurrentPages().length === 1) {
+        // 对navigateBack的特殊处理 或 app-plus
+        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
             payload.success = (...params) => {
                 watchAllowAction()
-                callWithoutNext(afterEachFn, to, routerStatus.current)
+                let page = getNowPage()
+                page.$passedParams = getParams('passedParams')
+                page.$routeParams = getParams('routeParams')
+                if (page.$vm) {
+                    page.$vm.$passedParams = page.$passedParams
+                    page.$vm.$routeParams = page.$routeParams
+                }
+                // 执行afterEach
+                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                routerStatus.current = getNowRoute()
+                // watchAllowAction()
+                // callWithoutNext(afterEachFn, to, routerStatus.current)
                 if (success) {
                     return success.apply(this, params)
                 }
@@ -278,6 +304,11 @@ export function bootstrap (Vue, options) {
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
         },
         onShow () {
+            // app-plus另外实现
+            if (env === 'app-plus') {
+                return
+            }
+
             // 判断是否能获取到页面栈
             try {
                 getNowUrl()

@@ -20,6 +20,16 @@ ___
 ```
 npm i uni-crazy-router -S
 ```  
+  
+## 引入  
+```javascript
+// 全文件引入(17K)
+import uniCrazyRouter from "uni-crazy-router"
+
+// 小文件引入(8K)（推荐小程序和h5使用，app会报require错误）
+import uniCrazyRouter from "uni-crazy-router/dist/small"
+```
+
 ___
 ## 配置  
 ### 第一步  

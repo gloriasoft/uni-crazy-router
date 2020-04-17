@@ -2,14 +2,38 @@
 
 import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
-import {uglify} from 'rollup-plugin-uglify'
+// import {uglify} from 'rollup-plugin-uglify'
 import commonjs from 'rollup-plugin-commonjs'
-// import builtins from 'rollup-plugin-node-builtins'
+import builtins from 'rollup-plugin-node-builtins'
+import {terser} from 'rollup-plugin-terser'
+
+const env = process.env.BUILD_ENV || 'index'
+
+function getGlobals () {
+    if (env === 'small') {
+        return {
+            url: 'url'
+        }
+    }
+    return {}
+}
+
+function getExternal () {
+    if (env === 'small') {
+        return ['url']
+    }
+    return []
+}
+
+function getInputFile () {
+    // if (env === 'small') return 'index.js'
+    return 'index.js'
+}
 
 const shared = {
-  input: 'src/index.js',
+  input: 'src/' + getInputFile(),
   plugins: [
-    // builtins(),
+    builtins(),
     resolve({
       customResolveOptions: {
         moduleDirectory: 'node_modules',
@@ -19,7 +43,7 @@ const shared = {
       exclude: 'node-modules/**',
     }),
     commonjs(),
-    uglify({
+      terser({
       compress: {
           pure_getters: true,
           unsafe: true,
@@ -27,18 +51,16 @@ const shared = {
       }
     })
   ],
-  external: ['url'],
+  external: getExternal(),
 }
 
 export default [
   Object.assign({}, shared, {
     output: {
-      file: 'dist/uni_crazy_router.umd.js',
-      format: 'umd',
+      file: 'dist/' + env + '.js',
+      format: 'esm',
       name: 'uni-crazy-router',
-      globals: {
-        url: 'url'
-      },
+      globals: getGlobals()
     },
   }),
 ]
