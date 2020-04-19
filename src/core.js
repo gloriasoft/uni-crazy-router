@@ -108,15 +108,19 @@ async function getAsyncResult (result, to, from, jumpType) {
             if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
                 watchAllowAction()
                 let page = getNowPage()
+                if (!('$routeParams' in page)) {
+                    page.$routeParams = getParams('routeParams')
+                }
                 page.$passedParams = getParams('passedParams')
-                page.$routeParams = getParams('routeParams')
                 if (page.$vm) {
                     page.$vm.$passedParams = page.$passedParams
-                    page.$vm.$routeParams = page.$routeParams
+                    if (!('$routeParams' in page.$vm)) {
+                        page.$vm.$routeParams = getParams('routeParams')
+                    }
                 }
 
                 // 执行afterEach
-                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                callWithoutNext(afterEachFn, to, from)
                 routerStatus.current = getNowRoute()
                 // watchAllowAction()
                 // callWithoutNext(afterEachFn, to, from)
@@ -136,6 +140,7 @@ async function getAsyncResult (result, to, from, jumpType) {
  * @returns {*}
  */
 export function intercept (nativeFun, payload={}, jumpType) {
+    const appPlusNowRoute = getNowRoute()
     // 判断是否能获取到页面栈
     try {
         getNowUrl()
@@ -180,7 +185,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         payload.fail = (...params) => {
             // 失败时重置防抖
             routerStatus.allowAction = true
-            callWithoutNext(onErrorFn, to, routerStatus.current)
+            callWithoutNext(onErrorFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
             if (fail) {
                 return fail.apply(this, params)
             }
@@ -191,14 +196,18 @@ export function intercept (nativeFun, payload={}, jumpType) {
             payload.success = (...params) => {
                 watchAllowAction()
                 let page = getNowPage()
+                if (!('$routeParams' in page)) {
+                    page.$routeParams = getParams('routeParams')
+                }
                 page.$passedParams = getParams('passedParams')
-                page.$routeParams = getParams('routeParams')
                 if (page.$vm) {
                     page.$vm.$passedParams = page.$passedParams
-                    page.$vm.$routeParams = page.$routeParams
+                    if (!('$routeParams' in page.$vm)) {
+                        page.$vm.$routeParams = getParams('routeParams')
+                    }
                 }
                 // 执行afterEach
-                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                callWithoutNext(afterEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
                 // watchAllowAction()
                 // callWithoutNext(afterEachFn, to, routerStatus.current)
@@ -210,7 +219,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
         // 自执行一个async函数
         (async function () {
-            if (!await callWithNext(beforeEachFn, to, routerStatus.current)) {
+            if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
                 payload.fail({
                     errMsg: 'beforeEach中没有使用next'
                 })
@@ -225,7 +234,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
     // 返回async
     return (async function () {
-        if (!await callWithNext(beforeEachFn, to, routerStatus.current)) {
+        if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
             // 失败时重置防抖
             routerStatus.allowAction = true
             callAfterNotNext()
@@ -235,7 +244,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         }
         waitJumpSucc = true
         const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
-        return getAsyncResult (result, to, routerStatus.current, jumpType)
+        return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
 }
 
@@ -300,15 +309,29 @@ function wrapNativeFun (nativeFunName) {
 export function bootstrap (Vue, options) {
     Vue.mixin({
         onLoad(){
-            watchAllowAction()
-            getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
-        },
-        onShow () {
             // app-plus另外实现
             if (env === 'app-plus') {
                 return
             }
-
+            watchAllowAction()
+            getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
+        },
+        onShow () {
+            // app-plus另外实现，因为uni的app端，vue.mixin不会混合所有页面
+            if (env === 'app-plus') {
+                // APP show
+                if (getCurrentPages().length < 1) {
+                    // 下一次宏任务就是第一个页面的onShow
+                    setTimeout(() => {
+                        watchAllowAction()
+                        getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+                        // 执行afterEach
+                        callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                        routerStatus.current = getNowRoute()
+                    })
+                }
+                return
+            }
             // 判断是否能获取到页面栈
             try {
                 getNowUrl()

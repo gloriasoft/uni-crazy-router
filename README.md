@@ -142,7 +142,8 @@ beforeEach只能拦截主动的路由切换（由路由切换API触发）
 + 小程序的navigator组件触发  
 + 小程序的返回首页按钮  
 + 小程序的tabbar按钮  
-+ 浏览器的前进后退按钮
++ 浏览器的前进后退按钮  
++ APP端IOS环境下，向右滑动返回的方式（并且也无法触发afterEach）  
   
 #### 参数   
 hookFunction {Function}
