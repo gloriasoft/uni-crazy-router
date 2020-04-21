@@ -63,7 +63,7 @@ uniCrazyRouter.afterEach((to, from)=>{
     // 逻辑代码
 })
 
-uniCrazyRouter.onError((to, from)=>{
+uniCrazyRouter['on'+'Error']((to, from)=>{
     // 逻辑代码
 })
 ```  
@@ -100,16 +100,13 @@ export default {
         // uni-app官方推荐方式，适用所有端
         console.log(getCurrentPages()[getCurrentPages().length-1].route)
     },
-    onShow() {
+    ['on'+'Show']() {
         // 获取路由页面参数
         console.log(this.$routeParams)
         console.log(getCurrentPages()[getCurrentPages().length-1].$routeParams)
         // 获取路由动作过程参数
         console.log(this.$passedParams)
         console.log(getCurrentPages()[getCurrentPages().length-1].$passedParams)
-    },
-    onUnload() {
-       
     },
     methods: {
         //....
@@ -136,7 +133,7 @@ routeParams和passedParams的值可以在页面vue实例中通过$routeParams和
 **路由拦截中的next用法于vue-router有所不同，next暂时不接受参数，调用next代表不拦截，如果函数中没有调用next，代表了拦截，beforeEach接受的函数参数是个async函数，意味着函数中即便需要使用异步也必须包装成promise的形式，使用await获取异步的结果，不能直接使用回调性质的异步比如setTimeout等，因为只要整个async函数返回前没有调用next，就会当作拦截了，在拦截时需要跳转到其他页面，需要使用afterNotNext进行包装（详见afterNotNext）**  
 PS: 之后的1.0.0以上的版本会开放和vue-router一样的拦截函数方式，可以不使用promise包装异步  
 + afterEach (hookFunction)  
-+ onError (hookFunction)  
++ on Error (hookFunction)  
 **其中beforeEach有拦截功能，通过next方法来控制  
 beforeEach只能拦截主动的路由切换（由路由切换API触发）  
 被动触发行为不会经过beforeEach，包括：**  

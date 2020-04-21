@@ -140,13 +140,13 @@ async function getAsyncResult (result, to, from, jumpType) {
  * @returns {*}
  */
 export function intercept (nativeFun, payload={}, jumpType) {
-    const appPlusNowRoute = getNowRoute()
     // 判断是否能获取到页面栈
     try {
         getNowUrl()
     } catch(e) {
         return nativeFun.call(uni, payload)
     }
+    const appPlusNowRoute = getNowRoute()
 
     let {fail, success, complete} = payload
     // 防抖
@@ -174,7 +174,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         toUrl = url.resolve(currentUrl,payload.url).replace(/^\/([^\/])/,'$1').replace(/([^?]+)\?[\s\S]*/,'$1')
     }
 
-    let to = {
+    let to = routerStatus.to = {
         url: toUrl,
         routeParams: payload.routeParams,
         passedParams: payload.passedParams,
@@ -221,7 +221,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         (async function () {
             if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
                 payload.fail({
-                    errMsg: 'beforeEach中没有使用next'
+                    errMsg: 'beforeEach中没有使用next，路由被拦截了'
                 })
                 callAfterNotNext()
                 return
@@ -239,7 +239,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
             routerStatus.allowAction = true
             callAfterNotNext()
             return [{
-                errMsg:'beforeEach中没有使用next'
+                errMsg:'beforeEach中没有使用next，路由被拦截了'
             }]
         }
         waitJumpSucc = true
@@ -302,6 +302,19 @@ function wrapNativeFun (nativeFunName) {
 }
 
 /**
+ * 对app的首页进行ready
+ * @param readyHook
+ */
+// function watchAppIndexReady (readyHook) {
+//     try {
+//         getNowPage()
+//         readyHook && readyHook()
+//     } catch(e) {
+//         setTimeout(watchAppIndexReady,13)
+//     }
+// }
+
+/**
  * 启动函数，用于在Vue plugin中的install方法中执行
  * @param Vue
  * @param options
@@ -317,18 +330,23 @@ export function bootstrap (Vue, options) {
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
         },
         onShow () {
+            const readyToAfterEach = () => {
+                // if (routerStatus.to.url === getNowUrl() && ) {
+                //
+                // }
+                watchAllowAction()
+                getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+                // 执行afterEach
+                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
+                routerStatus.current = getNowRoute()
+            }
             // app-plus另外实现，因为uni的app端，vue.mixin不会混合所有页面
             if (env === 'app-plus') {
                 // APP show
                 if (getCurrentPages().length < 1) {
                     // 下一次宏任务就是第一个页面的onShow
-                    setTimeout(() => {
-                        watchAllowAction()
-                        getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
-                        // 执行afterEach
-                        callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
-                        routerStatus.current = getNowRoute()
-                    })
+                    setTimeout(readyToAfterEach)
+                    // watchAppIndexReady(readyToAfterEach)
                 }
                 return
             }
@@ -339,12 +357,12 @@ export function bootstrap (Vue, options) {
                 return
             }
 
-            watchAllowAction()
+            // 过滤App
+            if (this.globalData) {
+                return
+            }
 
-            getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
-            // 执行afterEach
-            callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
-            routerStatus.current = getNowRoute()
+            readyToAfterEach()
         }
     })
 
