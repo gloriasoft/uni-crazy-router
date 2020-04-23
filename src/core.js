@@ -104,6 +104,12 @@ async function getAsyncResult (result, to, from, jumpType) {
             routerStatus.allowAction = true
             callWithoutNext(onErrorFn, to, from)
         } else {
+            // 对h5的reLaunch特殊处理
+            if (jumpType === 'reLaunch' && getCurrentPages().length === 1 && getNowUrl() === to.url && env === 'h5') {
+                watchAllowAction()
+                return newResult
+            }
+
             // 对navigateBack的特殊处理 或 app-plus
             if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
                 watchAllowAction()
@@ -130,6 +136,44 @@ async function getAsyncResult (result, to, from, jumpType) {
     } catch(e) {
         return new Error(e)
     }
+}
+
+/**
+ * 添加路由链的标签
+ * @param url
+ * @returns {string}
+ */
+// function addRouteTag (url = '') {
+//     routerStatus.routeTag = Math.random().toString(36).substr(2)
+//     return url.replace(/[?$]/,'?_ucr' + routerStatus.routeTag + '&')
+// }
+
+/**
+ * 对参数对象进行decode解析
+ * @param paramsMap
+ * @returns {{}}
+ */
+function decodeParamsMap (paramsMap) {
+    let cloneMap = {...paramsMap}
+    Object.keys(cloneMap).forEach((key) => {
+        cloneMap[key] = decodeURIComponent(cloneMap[key])
+    })
+    return cloneMap
+}
+
+/**
+ * 获取page对象的原生url参数
+ * @param page
+ * @returns {*}
+ */
+function getPageOptions (page) {
+    if (!page) return
+    // h5的page对象里没有options
+    if (env === 'h5') {
+        // 通过$mp.query获取
+        return page.$mp.query
+    }
+    return page.options
 }
 
 /**
@@ -160,7 +204,9 @@ export function intercept (nativeFun, payload={}, jumpType) {
     routerStatus.allowAction = false
     waitJumpSucc = false
     let currentUrl = getNowUrl()
-    let toUrl;
+    let toUrl
+    // 原始url参数
+    let query = {}
 
     if (jumpType === 'navigateBack') {
         let {delta = 1} = payload
@@ -168,18 +214,49 @@ export function intercept (nativeFun, payload={}, jumpType) {
         if (targetIndex < 0) {
             targetIndex = 0
         }
+        // 记录返回参考信息，用于验证
+        routerStatus.actionInfo.navigateBack = targetIndex
         toUrl = getCurrentPages()[targetIndex].route
+        query = getPageOptions(getCurrentPages()[targetIndex])
+        // h5环境uni使用的是vue-router会自动decode
+        if (env !== 'h5') {
+            query = decodeParamsMap(query)
+        }
+
     } else {
         // 去除根斜杠
-        toUrl = url.resolve(currentUrl,payload.url).replace(/^\/([^\/])/,'$1').replace(/([^?]+)\?[\s\S]*/,'$1')
+        toUrl = url.resolve(currentUrl,payload.url||'').replace(/^\/([^\/])/,'$1')
+        let tempMatch = toUrl.match(/([^?]+)\?([\s\S]*)/)
+        // 去掉query参数
+        toUrl = tempMatch && tempMatch[1] || ''
+        // 将query参数存储到query对象
+        if (tempMatch && tempMatch[2]) {
+            tempMatch[2].split('&').forEach((paramString) => {
+                if (!paramString) return
+                let paramStringMatch = paramString.match(/^([^=]+)=([\s\S]*)$/)
+                if (paramStringMatch && paramStringMatch[2]) {
+                    query[paramStringMatch[1]] = paramStringMatch[2]
+                    return
+                }
+                query[paramString] = ''
+            })
+        }
+        query = decodeParamsMap(query)
     }
 
-    let to = routerStatus.to = {
+    if (jumpType === 'switchTab') {
+        routerStatus.actionInfo.switchTab = toUrl
+    }
+    routerStatus.actionType = jumpType
+
+    let to = {
         url: toUrl,
         routeParams: payload.routeParams,
         passedParams: payload.passedParams,
+        query,
         jumpType
     }
+
     // 代表回调类型，返回undefined
     if (fail || success || complete) {
         payload.fail = (...params) => {
@@ -188,6 +265,16 @@ export function intercept (nativeFun, payload={}, jumpType) {
             callWithoutNext(onErrorFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
             if (fail) {
                 return fail.apply(this, params)
+            }
+        }
+
+        // 对h5的reLaunch特殊处理
+        if (jumpType === 'reLaunch' && getCurrentPages().length === 1 && getNowUrl() === to.url && env === 'h5') {
+            payload.success = (...params) => {
+                watchAllowAction()
+                if (success) {
+                    return success.apply(this, params)
+                }
             }
         }
 
@@ -221,7 +308,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         (async function () {
             if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
                 payload.fail({
-                    errMsg: 'beforeEach中没有使用next，路由被拦截了'
+                    errMsg: 'beforeEach中没有使用next'
                 })
                 callAfterNotNext()
                 return
@@ -239,7 +326,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
             routerStatus.allowAction = true
             callAfterNotNext()
             return [{
-                errMsg:'beforeEach中没有使用next，路由被拦截了'
+                errMsg:'beforeEach中没有使用next'
             }]
         }
         waitJumpSucc = true
@@ -272,20 +359,28 @@ function getNowPage () {
  */
 function getNowRoute () {
     let nowPage = getNowPage()
+    let query = getPageOptions(nowPage)
+    // h5环境uni使用的是vue-router会自动decode
+    if (env !== 'h5') {
+        query = decodeParamsMap(query)
+    }
     return {
         url: getNowUrl(),
         routeParams: nowPage.$routeParams,
-        passedParams: nowPage.$passedParams
+        passedParams: nowPage.$passedParams,
+        query
     }
 }
 
 /**
  * 监听防抖
+ * @param succHook
  */
-function watchAllowAction () {
+function watchAllowAction (succHook) {
     if (waitJumpSucc) {
         // 成功时重置防抖
         routerStatus.allowAction = true
+        succHook && succHook()
     }
     waitJumpSucc = false
 }
@@ -315,6 +410,58 @@ function wrapNativeFun (nativeFunName) {
 // }
 
 /**
+ * 鉴定路由的真伪，用于过滤非主动触发api造成的路由变更（这种路由叫做伪路由），遇到伪路由，不解锁
+ * @returns {boolean}
+ */
+// function checkRouteTag () {
+//     let tag = getNowPage().options[routerStatus.routeTag]
+//
+//     // h5环境的page对象没有options，通过$mp.query获取
+//     if (env === 'h5') {
+//         tag = getNowPage().$mp.query[routerStatus.routeTag]
+//     }
+//
+//     return !(tag == null)
+// }
+
+/**
+ * 清楚所有动作信息
+ */
+function clearActionInfo () {
+    routerStatus.actionInfo = {}
+}
+
+// 可能发生的原生情况只有navigateBack和switchTab(先排除h5的情况)
+const actionMap = {
+    navigateBack () {
+        if (routerStatus.actionInfo.navigateBack == null) {
+            return false
+        }
+        if (getCurrentPages().length-1 <= routerStatus.actionInfo.navigateBack) {
+            clearActionInfo()
+            return true
+        }
+    },
+    switchTab () {
+        if (routerStatus.actionInfo.switchTab == null) {
+            return false
+        }
+        if (getCurrentPages().length === 1 && getNowUrl() === routerStatus.actionInfo.switchTab) {
+            clearActionInfo()
+            return true
+        }
+    }
+}
+
+/**
+ * 验证是否原生动作 (将在之后1.0.0版本使用)
+ * @returns {*}
+ */
+function checkNativeAction () {
+    return actionMap[routerStatus.actionType]()
+}
+
+/**
  * 启动函数，用于在Vue plugin中的install方法中执行
  * @param Vue
  * @param options
@@ -326,16 +473,19 @@ export function bootstrap (Vue, options) {
             if (env === 'app-plus') {
                 return
             }
-            watchAllowAction()
+
+            // // 鉴定路由
+            // if (!checkRouteTag()) {
+            //     return
+            // }
+            // watchAllowAction()
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
         },
         onShow () {
             const readyToAfterEach = () => {
-                // if (routerStatus.to.url === getNowUrl() && ) {
-                //
-                // }
-                watchAllowAction()
-                getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+                watchAllowAction(() => {
+                    getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+                })
                 // 执行afterEach
                 callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
                 routerStatus.current = getNowRoute()
@@ -356,12 +506,10 @@ export function bootstrap (Vue, options) {
             } catch(e) {
                 return
             }
-
-            // 过滤App
+            // 过滤App.vue
             if (this.globalData) {
                 return
             }
-
             readyToAfterEach()
         }
     })

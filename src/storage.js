@@ -30,5 +30,12 @@ export const routerStatus = {
     // 当前路由对象
     current: {},
     // 当前需要处理的afterNotNext
-    afterNotNext: null
+    afterNotNext: null,
+    actionInfo: {
+        // navigateBack的目标信息，用来验证是否真正的返回，判断依据是页面栈小于减去delta之后的长度
+        navigateBack: null,
+        // switchTab的目标信息，用来验证是否真正的切换tab，判断依据是当前route的地址是否和目标地址一致
+        switchTab: null
+    },
+    actionType: null
 }
