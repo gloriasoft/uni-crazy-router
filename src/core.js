@@ -228,7 +228,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         toUrl = url.resolve(currentUrl,payload.url||'').replace(/^\/([^\/])/,'$1')
         let tempMatch = toUrl.match(/([^?]+)\?([\s\S]*)/)
         // 去掉query参数
-        toUrl = tempMatch && tempMatch[1] || ''
+        toUrl = tempMatch && tempMatch[1] || toUrl
         // 将query参数存储到query对象
         if (tempMatch && tempMatch[2]) {
             tempMatch[2].split('&').forEach((paramString) => {
@@ -400,14 +400,14 @@ function wrapNativeFun (nativeFunName) {
  * 对app的首页进行ready
  * @param readyHook
  */
-// function watchAppIndexReady (readyHook) {
-//     try {
-//         getNowPage()
-//         readyHook && readyHook()
-//     } catch(e) {
-//         setTimeout(watchAppIndexReady,13)
-//     }
-// }
+function watchAppIndexReady (readyHook) {
+    try {
+        getNowPage()
+        readyHook && readyHook()
+    } catch(e) {
+        setTimeout(watchAppIndexReady,13)
+    }
+}
 
 /**
  * 鉴定路由的真伪，用于过滤非主动触发api造成的路由变更（这种路由叫做伪路由），遇到伪路由，不解锁
@@ -495,8 +495,7 @@ export function bootstrap (Vue, options) {
                 // APP show
                 if (getCurrentPages().length < 1) {
                     // 下一次宏任务就是第一个页面的onShow
-                    setTimeout(readyToAfterEach)
-                    // watchAppIndexReady(readyToAfterEach)
+                    watchAppIndexReady(readyToAfterEach)
                 }
                 return
             }

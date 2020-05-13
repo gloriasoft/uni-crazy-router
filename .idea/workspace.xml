@@ -15,12 +15,14 @@
     <session id="934072912">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.9" value="1" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -28,19 +30,19 @@
           <entry key="LICENSE" value="1" />
           <entry key="babelrc" value="2" />
           <entry key="gitignore" value="3" />
-          <entry key="js" value="77" />
-          <entry key="json" value="5" />
+          <entry key="js" value="78" />
+          <entry key="json" value="6" />
           <entry key="md" value="4" />
-          <entry key="ts" value="5" />
+          <entry key="ts" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JSON" value="7" />
-          <entry key="JavaScript" value="77" />
+          <entry key="JSON" value="8" />
+          <entry key="JavaScript" value="78" />
           <entry key="Markdown" value="4" />
           <entry key="PLAIN_TEXT" value="4" />
-          <entry key="TypeScript" value="5" />
+          <entry key="TypeScript" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -48,13 +50,13 @@
           <entry key="babelrc" value="5" />
           <entry key="gitignore" value="8" />
           <entry key="js" value="2421" />
-          <entry key="json" value="308" />
+          <entry key="json" value="311" />
           <entry key="md" value="3811" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JSON" value="313" />
+          <entry key="JSON" value="316" />
           <entry key="JavaScript" value="2465" />
           <entry key="Markdown" value="3767" />
           <entry key="PLAIN_TEXT" value="8" />
@@ -70,37 +72,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dist/index.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="42">
-              <caret column="15315" selection-start-column="15315" selection-end-column="15315" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/storage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-71">
-              <caret line="22" column="29" lean-forward="true" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/core.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="23">
-              <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
+            <state relative-caret-position="506">
+              <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -108,7 +83,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dist/small.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
+            <state relative-caret-position="161">
               <caret column="677" selection-start-column="677" selection-end-column="677" />
             </state>
           </provider>
@@ -118,27 +93,20 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="163">
+              <first_editor relative-caret-position="2990">
                 <caret line="130" column="157" selection-start-line="130" selection-start-column="157" selection-end-line="131" selection-end-column="27" />
-                <folding>
-                  <element signature="e#0#21#0" expanded="true" />
-                </folding>
               </first_editor>
               <second_editor />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README-uni.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="368">
+              <first_editor relative-caret-position="2944">
                 <caret line="128" column="27" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
-                <folding>
-                  <element signature="e#0#21#0" expanded="true" />
-                  <element signature="e#0#21#0" expanded="true" />
-                </folding>
               </first_editor>
               <second_editor />
             </state>
@@ -175,6 +143,27 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/core.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1319">
+              <caret line="225" column="12" lean-forward="true" selection-start-line="225" selection-start-column="12" selection-end-line="225" selection-end-column="12" />
+              <folding>
+                <element signature="e#0#76#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="23">
+              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -186,11 +175,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getNowUrl</find>
-      <find>AAAAAAAAAA</find>
-      <find>onshow</find>
-      <find>ddd</find>
-      <find>oooo</find>
       <find>afterEach</find>
       <find>passedParams</find>
       <find>process.env.VUE_APP_PLATFORM</find>
@@ -216,6 +200,11 @@
       <find>没有使用next</find>
       <find>路由被拦截了</find>
       <find>navigateBack</find>
+      <find>getNow</find>
+      <find>getNowUrl</find>
+      <find>getC</find>
+      <find>getNowPage</find>
+      <find>watchAppIndexReady</find>
     </findStrings>
     <dirStrings>
       <dir>E:\git\uni-crazy-router\node_modules\url</dir>
@@ -244,10 +233,10 @@
         <option value="$PROJECT_DIR$/customBuild.js" />
         <option value="$PROJECT_DIR$/src/url.js" />
         <option value="$PROJECT_DIR$/rollup.config.js" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/core.js" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/README-uni.md" />
+        <option value="$PROJECT_DIR$/src/core.js" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -266,17 +255,16 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
-    <option name="y" value="-12" />
-    <option name="width" value="2762" />
-    <option name="height" value="1790" />
+    <option name="x" value="-2174" />
+    <option name="y" value="-2031" />
+    <option name="width" value="2187" />
+    <option name="height" value="3801" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -298,11 +286,12 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../uni-crazy-router-demo" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -346,17 +335,19 @@
       <workItem from="1586968415930" duration="64957000" />
       <workItem from="1587194825789" duration="14261000" />
       <workItem from="1587450491852" duration="1583000" />
+      <workItem from="1589351984246" duration="2895000" />
+      <workItem from="1589355939267" duration="3293000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83560000" />
+    <option name="totallyTimeSpent" value="92783000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1381" height="895" extended-state="6" />
+    <frame x="-2166" y="-2023" width="972" height="1689" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13150074" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13525027" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -368,7 +359,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.2549801" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.25452197" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -461,9 +452,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1518">
           <caret line="65" column="5" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -497,11 +485,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="161">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#64#112#0" expanded="true" />
-            <element signature="e#200#245#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_PLUGINS_DIR$/weapp-support-plugin.jar!/lib/weixin-app/index.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="5199" column="15" lean-forward="true" selection-start-line="5199" selection-start-column="15" selection-end-line="5199" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="2990">
+            <caret line="130" column="157" selection-start-line="130" selection-start-column="157" selection-end-line="131" selection-end-column="27" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README-uni.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="2944">
+            <caret line="128" column="27" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
@@ -531,63 +541,39 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/small.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
+        <state relative-caret-position="161">
           <caret column="677" selection-start-column="677" selection-end-column="677" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/dist/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
+        <state relative-caret-position="4048">
           <caret column="15315" selection-start-column="15315" selection-end-column="15315" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/storage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-71">
-          <caret line="22" column="29" lean-forward="true" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+        <state relative-caret-position="506">
+          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core.js">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1319">
+          <caret line="225" column="12" lean-forward="true" selection-start-line="225" selection-start-column="12" selection-end-line="225" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#76#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
-          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="163">
-            <caret line="130" column="157" selection-start-line="130" selection-start-column="157" selection-end-line="131" selection-end-column="27" />
-            <folding>
-              <element signature="e#0#21#0" expanded="true" />
-            </folding>
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README-uni.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="368">
-            <caret line="128" column="27" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
-            <folding>
-              <element signature="e#0#21#0" expanded="true" />
-              <element signature="e#0#21#0" expanded="true" />
-            </folding>
-          </first_editor>
-          <second_editor />
+          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>
