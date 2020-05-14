@@ -405,7 +405,9 @@ function watchAppIndexReady (readyHook) {
         getNowPage()
         readyHook && readyHook()
     } catch(e) {
-        setTimeout(watchAppIndexReady,13)
+        setTimeout(() => {
+            watchAppIndexReady(readyHook)
+        },13)
     }
 }
 
