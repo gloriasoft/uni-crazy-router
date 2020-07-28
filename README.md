@@ -129,7 +129,8 @@ uni.navigateBack**
 + routeParams {Object} 路由触发的页面参数，在页面加载后将一直存在并且不再改变  
 + passedParams {Object}  路由触发的过程参数，每次通过主动触发路由的改变，就会被修改  
 routeParams和passedParams的值可以在页面vue实例中通过$routeParams和$passedParams获取(比如this.$routeParams)，也可以通过getCurrentPages()获取到页面栈中的页面对象，对象中同样存在$routeParams和$passedParams  
-+ query {Object} 原生的url参数  
++ query {Object} 原生的url参数对象  
++ search {String} 原生的url参数的原始路径字符串
   
 ### 钩子函数与拦截器  
 钩子函数和拦截器与vue-router的使用方式雷同，开放了三个钩子  
@@ -150,7 +151,7 @@ beforeEach只能拦截主动的路由切换（由路由切换API触发）
   
 #### 参数   
 hookFunction {Function}
-+ to  {Object} {url, routeParams, passedParams, query, jumpType}  
++ to  {Object} {url, routeParams, passedParams, query, jumpType, search}  
 其中jumpType只有在beforeEach中出现，用于标识主动触发的类型（原生方法名）
 + from  {Object} {url, routeParams, passedParams}
 + next  {Function} 只有beforeEach才有

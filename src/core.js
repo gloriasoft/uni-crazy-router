@@ -128,8 +128,6 @@ async function getAsyncResult (result, to, from, jumpType) {
                 // 执行afterEach
                 callWithoutNext(afterEachFn, to, from)
                 routerStatus.current = getNowRoute()
-                // watchAllowAction()
-                // callWithoutNext(afterEachFn, to, from)
             }
         }
         return newResult
@@ -159,6 +157,19 @@ function decodeParamsMap (paramsMap) {
         cloneMap[key] = decodeURIComponent(cloneMap[key])
     })
     return cloneMap
+}
+
+/**
+ * 对参数对象进行encode处理，并且拼接字符串
+ * @param paramsMap
+ * @returns {string}
+ */
+function encodeParamsMapToString (paramsMap) {
+    const resultArr = []
+    Object.keys(paramsMap).forEach((key) => {
+        resultArr.push(`${key}=${encodeURIComponent(paramsMap[key])}`)
+    })
+    return resultArr.join('&')
 }
 
 /**
@@ -207,6 +218,8 @@ export function intercept (nativeFun, payload={}, jumpType) {
     let toUrl
     // 原始url参数
     let query = {}
+    // 原始未经处理的query字符串
+    let search = ''
 
     if (jumpType === 'navigateBack') {
         let {delta = 1} = payload
@@ -218,6 +231,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         routerStatus.actionInfo.navigateBack = targetIndex
         toUrl = getCurrentPages()[targetIndex].route
         query = getPageOptions(getCurrentPages()[targetIndex])
+        search = encodeParamsMapToString(query)
         // h5环境uni使用的是vue-router会自动decode
         if (env !== 'h5') {
             query = decodeParamsMap(query)
@@ -231,6 +245,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         toUrl = tempMatch && tempMatch[1] || toUrl
         // 将query参数存储到query对象
         if (tempMatch && tempMatch[2]) {
+            search = tempMatch[2]
             tempMatch[2].split('&').forEach((paramString) => {
                 if (!paramString) return
                 let paramStringMatch = paramString.match(/^([^=]+)=([\s\S]*)$/)
@@ -254,7 +269,8 @@ export function intercept (nativeFun, payload={}, jumpType) {
         routeParams: payload.routeParams,
         passedParams: payload.passedParams,
         query,
-        jumpType
+        jumpType,
+        search
     }
 
     // 代表回调类型，返回undefined
@@ -296,8 +312,6 @@ export function intercept (nativeFun, payload={}, jumpType) {
                 // 执行afterEach
                 callWithoutNext(afterEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
-                // watchAllowAction()
-                // callWithoutNext(afterEachFn, to, routerStatus.current)
                 if (success) {
                     return success.apply(this, params)
                 }
@@ -368,7 +382,8 @@ function getNowRoute () {
         url: getNowUrl(),
         routeParams: nowPage.$routeParams,
         passedParams: nowPage.$passedParams,
-        query
+        query,
+        search: encodeParamsMapToString(query)
     }
 }
 
@@ -427,7 +442,7 @@ function watchAppIndexReady (readyHook) {
 // }
 
 /**
- * 清楚所有动作信息
+ * 清除所有动作信息
  */
 function clearActionInfo () {
     routerStatus.actionInfo = {}
