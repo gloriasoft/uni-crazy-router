@@ -15,17 +15,17 @@
     <session id="934072912">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="15" />
           <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.1" value="4" />
+          <entry key="project.open.time.1" value="5" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.2" value="3" />
-          <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="15" />
+          <entry key="project.opened" value="17" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -33,17 +33,17 @@
           <entry key="LICENSE" value="1" />
           <entry key="babelrc" value="2" />
           <entry key="gitignore" value="3" />
-          <entry key="js" value="86" />
+          <entry key="js" value="87" />
           <entry key="json" value="6" />
-          <entry key="md" value="4" />
+          <entry key="md" value="5" />
           <entry key="ts" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="8" />
-          <entry key="JavaScript" value="86" />
-          <entry key="Markdown" value="4" />
+          <entry key="JavaScript" value="87" />
+          <entry key="Markdown" value="5" />
           <entry key="PLAIN_TEXT" value="4" />
           <entry key="TypeScript" value="6" />
         </counts>
@@ -53,15 +53,15 @@
           <entry key="babelrc" value="5" />
           <entry key="gitignore" value="8" />
           <entry key="js" value="3307" />
-          <entry key="json" value="320" />
-          <entry key="md" value="3862" />
+          <entry key="json" value="321" />
+          <entry key="md" value="3898" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JSON" value="325" />
+          <entry key="JSON" value="326" />
           <entry key="JavaScript" value="3351" />
-          <entry key="Markdown" value="3818" />
+          <entry key="Markdown" value="3854" />
           <entry key="PLAIN_TEXT" value="8" />
         </counts>
       </usages-collector>
@@ -78,8 +78,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="230">
-                <caret line="10" column="41" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
+              <first_editor relative-caret-position="3519">
+                <caret line="153" column="71" selection-start-line="153" selection-start-column="65" selection-end-line="153" selection-end-column="71" />
               </first_editor>
               <second_editor />
             </state>
@@ -89,7 +89,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/README-uni.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SECOND">
+            <state split_layout="FIRST">
               <first_editor relative-caret-position="2944">
                 <caret line="128" column="27" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
               </first_editor>
@@ -116,11 +116,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/core.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="240" column="16" lean-forward="true" selection-start-line="240" selection-start-column="16" selection-end-line="240" selection-end-column="16" />
+            <state relative-caret-position="414">
+              <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
               <folding>
                 <element signature="e#0#76#0" expanded="true" />
               </folding>
@@ -131,7 +131,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/storage.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
+            <state relative-caret-position="506">
               <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
             </state>
           </provider>
@@ -140,7 +140,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/uniCrazyRouter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1037">
+            <state>
               <caret column="7" selection-start-column="7" selection-end-column="7" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
@@ -149,11 +149,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="46">
-              <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
+            <state relative-caret-position="345">
+              <caret line="19" column="64" lean-forward="true" selection-start-line="19" selection-start-column="64" selection-end-line="19" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -187,7 +187,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Function</find>
       <find>url</find>
       <find>regenerator</find>
       <find>BABEL_ENV</find>
@@ -217,6 +216,7 @@
       <find>decodeParamsMap</find>
       <find>callWithoutNext</find>
       <find>query</find>
+      <find>search</find>
     </findStrings>
     <dirStrings>
       <dir>E:\git\uni-crazy-router\node_modules\url</dir>
@@ -248,9 +248,9 @@
         <option value="$PROJECT_DIR$/rollup.config.js" />
         <option value="$PROJECT_DIR$/README-uni.md" />
         <option value="$PROJECT_DIR$/test.js" />
-        <option value="$PROJECT_DIR$/src/core.js" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/core.js" />
       </list>
     </option>
   </component>
@@ -289,6 +289,11 @@
             <path>
               <item name="uni-crazy-router" type="b2602c69:ProjectViewProjectNode" />
               <item name="uni-crazy-router" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="uni-crazy-router" type="b2602c69:ProjectViewProjectNode" />
+              <item name="uni-crazy-router" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -300,7 +305,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../uni-crazy-router-demo" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -354,18 +359,20 @@
       <workItem from="1591810410730" duration="2216000" />
       <workItem from="1593486369502" duration="1936000" />
       <workItem from="1593856518271" duration="8752000" />
-      <workItem from="1595920137977" duration="2565000" />
+      <workItem from="1595920137977" duration="4376000" />
+      <workItem from="1596909146585" duration="648000" />
+      <workItem from="1598006025975" duration="2573000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="124678000" />
+    <option name="totallyTimeSpent" value="129710000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1381" height="895" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18424962" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18424962" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -377,7 +384,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.2124834" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.2124834" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="TypeScript" order="11" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -499,13 +506,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/small.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-898">
-          <caret column="677" selection-start-column="677" selection-end-column="677" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/rollup.config.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1288">
@@ -514,9 +514,26 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test.js" />
+    <entry file="file://$PROJECT_DIR$/dist/small.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret column="677" selection-start-column="677" selection-end-column="677" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="3519">
+            <caret line="153" column="71" selection-start-line="153" selection-start-column="65" selection-end-line="153" selection-end-column="71" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README-uni.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SECOND">
+        <state split_layout="FIRST">
           <first_editor relative-caret-position="2944">
             <caret line="128" column="27" selection-start-line="128" selection-start-column="27" selection-end-line="128" selection-end-column="27" />
           </first_editor>
@@ -538,16 +555,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/index.js">
+    <entry file="file://$PROJECT_DIR$/src/storage.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret column="15315" selection-start-column="15315" selection-end-column="15315" />
+        <state relative-caret-position="506">
+          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/uniCrazyRouter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1037">
+        <state>
           <caret column="7" selection-start-column="7" selection-end-column="7" />
           <folding>
             <element signature="e#0#42#0" expanded="true" />
@@ -555,10 +572,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/storage.js">
+    <entry file="file://$PROJECT_DIR$/dist/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="22" column="29" selection-start-line="22" selection-start-column="29" selection-end-line="22" selection-end-column="29" />
+        <state relative-caret-position="345">
+          <caret column="15315" selection-start-column="15315" selection-end-column="15315" />
         </state>
       </provider>
     </entry>
@@ -569,30 +586,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="19" column="64" lean-forward="true" selection-start-line="19" selection-start-column="64" selection-end-line="19" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/core.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="240" column="16" lean-forward="true" selection-start-line="240" selection-start-column="16" selection-end-line="240" selection-end-column="16" />
+        <state relative-caret-position="414">
+          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
           <folding>
             <element signature="e#0#76#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="230">
-            <caret line="10" column="41" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="46">
-          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
         </state>
       </provider>
     </entry>

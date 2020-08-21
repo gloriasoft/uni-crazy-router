@@ -3,9 +3,32 @@ import url from "url"
 
 // 环境判断 用于app端的特殊处理
 const env = process.env.VUE_APP_PLATFORM
+// 判断h5是否真的触发跳转了，检测H5的跳转是否执行，因为uni某些情况并不会执行跳转，所以需要做特殊处理，否则不会释放拦截锁
+let h5JumpStatus = 0
+const nativePushState = history.pushState
+const nativeReplaceState = history.replaceState
+history.pushState = function (...args) {
+    h5JumpStatus = 1
+    return nativePushState.apply(this, args)
+}
+history.replaceState = function (...args) {
+    h5JumpStatus = 1
+    return nativeReplaceState.apply(this, args)
+}
+function checkH5NotJump (to) {
+    if (env !== 'h5') return
+    if (h5JumpStatus) {
+        h5JumpStatus = 0
+        return
+    }
+    // 失败时重置防抖
+    routerStatus.allowAction = true
+    // callWithoutNext(onErrorFn, to, routerStatus.current)
+}
 
 // 内部防抖开关
 let waitJumpSucc = false
+
 
 /**
  * 注销绑定的函数
@@ -328,7 +351,11 @@ export function intercept (nativeFun, payload={}, jumpType) {
                 return
             }
             waitJumpSucc = true
+            if (env === 'h5') {
+                h5JumpStatus = 0
+            }
             nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
+            checkH5NotJump(to)
         })()
         return
     }
@@ -344,7 +371,11 @@ export function intercept (nativeFun, payload={}, jumpType) {
             }]
         }
         waitJumpSucc = true
+        if (env === 'h5') {
+            h5JumpStatus = 0
+        }
         const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
+        checkH5NotJump(to)
         return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
 }
