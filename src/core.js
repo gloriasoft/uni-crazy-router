@@ -5,15 +5,17 @@ import url from "url"
 const env = process.env.VUE_APP_PLATFORM
 // 判断h5是否真的触发跳转了，检测H5的跳转是否执行，因为uni某些情况并不会执行跳转，所以需要做特殊处理，否则不会释放拦截锁
 let h5JumpStatus = 0
-const nativePushState = history.pushState
-const nativeReplaceState = history.replaceState
-history.pushState = function (...args) {
-    h5JumpStatus = 1
-    return nativePushState.apply(this, args)
-}
-history.replaceState = function (...args) {
-    h5JumpStatus = 1
-    return nativeReplaceState.apply(this, args)
+if (env === 'h5') {
+    const nativePushState = history.pushState
+    const nativeReplaceState = history.replaceState
+    history.pushState = function (...args) {
+        h5JumpStatus = 1
+        return nativePushState.apply(this, args)
+    }
+    history.replaceState = function (...args) {
+        h5JumpStatus = 1
+        return nativeReplaceState.apply(this, args)
+    }
 }
 function checkH5NotJump (to) {
     if (env !== 'h5') return

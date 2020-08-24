@@ -1,5 +1,8 @@
 # uni-crazy-router  
 一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子
+
+## 详细文档请访问  
+[https://github.com/devilwjp/uni-crazy-router](https://github.com/devilwjp/uni-crazy-router)  
     
 ___
 ## 注意  
