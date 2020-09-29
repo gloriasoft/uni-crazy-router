@@ -232,6 +232,7 @@ const interceptVip = bindInterceptVip()
 `router/interceptLogin`  
 ```javascript
 import uniCrazyRouter from "uni-crazy-router"
+import store from '@/store'
 function bindInterceptLogin () {
     return uniCrazyRouter.beforeEach(async (to, from ,next) => {
         // 判断是否登录，没有登陆就跳转到登录页，并且要去除对登录页的拦截，否则会死循环
@@ -252,6 +253,7 @@ export default bindInterceptLogin
 `router/interceptVip`  
 ```javascript
 import uniCrazyRouter from "uni-crazy-router"
+import store from '@/store'
 function bindInterceptVip () {
     return uniCrazyRouter.beforeEach(async (to, from ,next) => {
         if (to.url === 'pages/vip/vip' && !store.state.isVip) {

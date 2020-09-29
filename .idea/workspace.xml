@@ -55,13 +55,13 @@
           <entry key="gitignore" value="8" />
           <entry key="js" value="3346" />
           <entry key="json" value="322" />
-          <entry key="md" value="5195" />
+          <entry key="md" value="5197" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="327" />
-          <entry key="JavaScript" value="3419" />
+          <entry key="JavaScript" value="3421" />
           <entry key="Markdown" value="5122" />
           <entry key="PLAIN_TEXT" value="8" />
         </counts>
@@ -121,9 +121,11 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="376">
-                <caret line="182" column="41" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
+              <first_editor relative-caret-position="1112">
+                <caret line="252" column="23" lean-forward="true" selection-start-line="252" selection-start-column="23" selection-end-line="252" selection-end-column="23" />
                 <folding>
+                  <element signature="e#0#45#0" expanded="true" />
+                  <element signature="e#0#45#0" expanded="true" />
                   <element signature="e#0#45#0" expanded="true" />
                   <element signature="e#0#45#0" expanded="true" />
                 </folding>
@@ -367,12 +369,12 @@
       <workItem from="1598035677166" duration="3316000" />
       <workItem from="1598243738076" duration="1745000" />
       <workItem from="1601360769103" duration="2780000" />
-      <workItem from="1601364160358" duration="3425000" />
+      <workItem from="1601364160358" duration="4000000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="141328000" />
+    <option name="totallyTimeSpent" value="141903000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2166" y="-2021" width="972" height="1689" extended-state="6" />
@@ -603,9 +605,11 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="376">
-            <caret line="182" column="41" selection-start-line="182" selection-start-column="41" selection-end-line="182" selection-end-column="41" />
+          <first_editor relative-caret-position="1112">
+            <caret line="252" column="23" lean-forward="true" selection-start-line="252" selection-start-column="23" selection-end-line="252" selection-end-column="23" />
             <folding>
+              <element signature="e#0#45#0" expanded="true" />
+              <element signature="e#0#45#0" expanded="true" />
               <element signature="e#0#45#0" expanded="true" />
               <element signature="e#0#45#0" expanded="true" />
             </folding>
