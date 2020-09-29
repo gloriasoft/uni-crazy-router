@@ -162,7 +162,7 @@ afterNotNext只对当前函数上下文有效
 #### 参数  
 hookFunction {Function} 在beforeEach被拦截后同步执行  
 用在beforeEach拦截中，当遇到没有next的场景，会在拦截动作之后同步的触发传入的函数  
-因为uni-crazy-router做了防抖重复动作拦截，所以如果想在before里使用路由跳转动作，需要包装在afterNotNext里  
+因为uni-crazy-router做了防抖重复动作拦截，所以如果想在before里使用路由跳转动作，需要包装在afterNotNext里（需要注意的是，在拦截器中跳转到其他页面，还是会再次被进行拦截的，所以当跳转到一些不需要被拦截的页面时需要在拦截判断中去除这些页面地址，否则会造成跳转的死循环）  
 ```javascript
 uniCrazyRouter.beforeEach(async (to, from ,next)=>{
     if (to.passedParams && to.passedParams.stop) {
@@ -176,6 +176,94 @@ uniCrazyRouter.beforeEach(async (to, from ,next)=>{
     }
     next()
 })
+```  
+
+## 设计模式  
+uni-crazy-router作为一款路由拦截插件同时支持多种开发模式，可以中心化的去管理所有的拦截逻辑（推荐），当然也可以去中心化的在不同的业务层中去单独的注册拦截处理  
+所有的钩子都是观察者模式设计，可以无数次的进行注册和销毁，不同的拦截逻辑并不需要现在一个拦截器中  
+这个例子就是合理的将不同的拦截逻辑进行拆分，（拦截的顺序是根据先注册的先处理，如果有一个拦截器被拦截了，之后的就会中断）  
+`router/index.js`  
+```javascript
+import uniCrazyRouter from "uni-crazy-router"
+import store from '@/store'
+Vue.use(uniCrazyRouter)
+// 先注册一个拦截，用来拦截是否登陆
+const interceptLogin = uniCrazyRouter.beforeEach(async (to, from ,next) => {
+    // 判断是否登录，没有登陆就跳转到登录页，并且要去除对登录页的拦截，否则会死循环
+    if (!store.state.isLogin && to.url !== 'pages/login/login') {
+        uniCrazyRouter.afterNotNext(() => {
+            // 拦截路由，并且跳转去登录页
+            uni.navigateTo({
+                url: '/pages/login/login'
+            })
+            return // 拦截路由，不执行next
+        })
+    }
+    next()
+})
+
+// 再注册一个拦截，用来拦截是否vip用户
+const interceptVip = uniCrazyRouter.beforeEach(async (to, from ,next) => {
+    if (to.url === 'pages/vip/vip' && !store.state.isVip) {
+        uni.showToast({
+            title: '您不是vip，无权访问'
+        })
+        return // 拦截路由，不执行next
+    }
+    next()
+})
+
+// 我们还可销毁已注册的拦截
+setTimeout(() => {
+    interceptVip() // 销毁拦截器interceptVip
+}, 10000)
+```  
+我们将上面的例子进行逻辑和模块的重新整理，将两个拦截器的逻辑分别放到两个不同的js中，然后在`router/index.js`中引入  
+`router/index.js`  
+```javascript
+import uniCrazyRouter from "uni-crazy-router"
+import bindInterceptLogin from '@/router/interceptLogin'
+import bindInterceptVip from '@/router/interceptVip'
+Vue.use(uniCrazyRouter)
+
+const interceptLogin = bindInterceptLogin()
+const interceptVip = bindInterceptVip()
+```  
+`router/interceptLogin`  
+```javascript
+import uniCrazyRouter from "uni-crazy-router"
+function bindInterceptLogin () {
+    return uniCrazyRouter.beforeEach(async (to, from ,next) => {
+        // 判断是否登录，没有登陆就跳转到登录页，并且要去除对登录页的拦截，否则会死循环
+        if (!store.state.isLogin && to.url !== 'pages/login/login') {
+            uniCrazyRouter.afterNotNext(() => {
+                // 拦截路由，并且跳转去登录页
+                uni.navigateTo({
+                    url: '/pages/login/login'
+                })
+                return // 拦截路由，不执行next
+            })
+        }
+        next()
+    })
+}
+export default bindInterceptLogin
+```  
+`router/interceptVip`  
+```javascript
+import uniCrazyRouter from "uni-crazy-router"
+function bindInterceptVip () {
+    return uniCrazyRouter.beforeEach(async (to, from ,next) => {
+        if (to.url === 'pages/vip/vip' && !store.state.isVip) {
+            uni.showToast({
+                title: '您不是vip，无权访问'
+            })
+            return // 拦截路由，不执行next
+        }
+        next()
+    })
+}
+export default bindInterceptVip
 ```  
 ## 其他  
 获取当前页面的路径，请使用uni-app官方推荐的方式，不再重复包装  
