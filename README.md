@@ -196,8 +196,8 @@ const interceptLogin = uniCrazyRouter.beforeEach(async (to, from ,next) => {
             uni.navigateTo({
                 url: '/pages/login/login'
             })
-            return // 拦截路由，不执行next
         })
+        return // 拦截路由，不执行next
     }
     next()
 })
@@ -242,8 +242,8 @@ function bindInterceptLogin () {
                 uni.navigateTo({
                     url: '/pages/login/login'
                 })
-                return // 拦截路由，不执行next
             })
+            return // 拦截路由，不执行next
         }
         next()
     })
