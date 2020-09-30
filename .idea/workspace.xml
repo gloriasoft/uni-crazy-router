@@ -55,14 +55,14 @@
           <entry key="gitignore" value="8" />
           <entry key="js" value="3346" />
           <entry key="json" value="322" />
-          <entry key="md" value="5201" />
+          <entry key="md" value="5254" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="327" />
           <entry key="JavaScript" value="3423" />
-          <entry key="Markdown" value="5124" />
+          <entry key="Markdown" value="5177" />
           <entry key="PLAIN_TEXT" value="8" />
         </counts>
       </usages-collector>
@@ -105,7 +105,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="219">
@@ -117,12 +117,12 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="458">
-                <caret line="198" column="10" lean-forward="true" selection-start-line="198" selection-start-column="10" selection-end-line="198" selection-end-column="10" />
+              <first_editor relative-caret-position="836">
+                <caret line="181" column="85" lean-forward="true" selection-start-line="181" selection-start-column="85" selection-end-line="181" selection-end-column="85" />
                 <folding>
                   <element signature="e#0#45#0" expanded="true" />
                   <element signature="e#0#45#0" expanded="true" />
@@ -278,10 +278,10 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-12" />
-    <option name="y" value="-12" />
-    <option name="width" value="2762" />
-    <option name="height" value="1790" />
+    <option name="x" value="-2174" />
+    <option name="y" value="-2029" />
+    <option name="width" value="2187" />
+    <option name="height" value="3801" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -369,18 +369,18 @@
       <workItem from="1598035677166" duration="3316000" />
       <workItem from="1598243738076" duration="1745000" />
       <workItem from="1601360769103" duration="2780000" />
-      <workItem from="1601364160358" duration="8015000" />
+      <workItem from="1601364160358" duration="8225000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="145918000" />
+    <option name="totallyTimeSpent" value="146128000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1381" height="895" extended-state="6" />
+    <frame x="-2166" y="-2021" width="972" height="1689" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18647845" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20234291" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -585,22 +585,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="458">
-            <caret line="198" column="10" lean-forward="true" selection-start-line="198" selection-start-column="10" selection-end-line="198" selection-end-column="10" />
-            <folding>
-              <element signature="e#0#45#0" expanded="true" />
-              <element signature="e#0#45#0" expanded="true" />
-              <element signature="e#0#45#0" expanded="true" />
-              <element signature="e#0#45#0" expanded="true" />
-            </folding>
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/storage.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="506">
@@ -615,6 +599,22 @@
           <folding>
             <element signature="e#0#76#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="836">
+            <caret line="181" column="85" lean-forward="true" selection-start-line="181" selection-start-column="85" selection-end-line="181" selection-end-column="85" />
+            <folding>
+              <element signature="e#0#45#0" expanded="true" />
+              <element signature="e#0#45#0" expanded="true" />
+              <element signature="e#0#45#0" expanded="true" />
+              <element signature="e#0#45#0" expanded="true" />
+            </folding>
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
