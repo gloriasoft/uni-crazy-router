@@ -1,8 +1,20 @@
+/// <reference path="./global.d.ts" />
+type to = {
+    url: string;
+    query?: object | null;
+    jumpType: string;
+    search?: string;
+} & UniCrazyGlobalTypes.UniCrazyRouterParams;
+type from = ({
+    url: string;
+    query?: object | null;
+    search?: string;
+} & UniCrazyGlobalTypes.UniCrazyRouterParams) | null | undefined;
 interface callWithNext {
-    (hook: (to: any, from: any, next: Function) => void) : Function;
+    (hook: (to: to, from: from, next: Function) => void) : Function;
 }
 interface callWithoutNext {
-    (hook: (to: any, from: any) => void): Function;
+    (hook: (to: to, from: from) => void): Function;
 }
 interface normalCall {
     (call: Function): void;
@@ -20,3 +32,9 @@ interface uniCrazyRouter {
 }
 declare const uniCrazyRouter: uniCrazyRouter;
 export default uniCrazyRouter;
+declare module "vue/types/vue" {
+    interface Vue {
+        $routeParmas?: object | null;
+        $passedParams?: object | null;
+    }
+}

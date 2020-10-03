@@ -37,7 +37,8 @@ const shared = {
   plugins: [
       {
           buildStart () {
-              fs.copySync(path.resolve(__dirname,'index.d.ts'), path.resolve(__dirname,`dist/${env === 'small' ? 'small' : 'index'}.d.ts`), )
+              fs.copySync(path.resolve(__dirname,'index.d.ts'), path.resolve(__dirname,`dist/${env === 'small' ? 'small' : 'index'}.d.ts`))
+              fs.copySync(path.resolve(__dirname,'global.d.ts'), path.resolve(__dirname,`dist/global.d.ts`))
           }
       },
     builtins(),
