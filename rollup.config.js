@@ -6,6 +6,8 @@ import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
 import builtins from 'rollup-plugin-node-builtins'
 import {terser} from 'rollup-plugin-terser'
+const fs = require('fs-extra')
+const path = require('path')
 
 const env = process.env.BUILD_ENV || 'index'
 
@@ -33,6 +35,12 @@ function getInputFile () {
 const shared = {
   input: 'src/' + getInputFile(),
   plugins: [
+      {
+          buildStart () {
+              fs.copySync(path.resolve(__dirname,'index.d.ts'), path.resolve(__dirname,`dist/${env === 'small' ? 'small' : 'index'}.d.ts`))
+              fs.copySync(path.resolve(__dirname,'global.d.ts'), path.resolve(__dirname,`dist/global.d.ts`))
+          }
+      },
     builtins(),
     resolve({
       customResolveOptions: {

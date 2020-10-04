@@ -65,5 +65,9 @@ class uniCrazyRouter {
         return this
     }
 }
-
-export default new uniCrazyRouter()
+const uniCrazyRouterInstance = new uniCrazyRouter()
+export default uniCrazyRouterInstance
+export const beforeEach = uniCrazyRouterInstance.beforeEach
+export const afterEach = uniCrazyRouterInstance.afterEach
+export const onError = uniCrazyRouterInstance.onError
+export const afterNotNext = uniCrazyRouterInstance.afterNotNext
