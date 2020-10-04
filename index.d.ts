@@ -34,7 +34,7 @@ declare const uniCrazyRouter: uniCrazyRouter;
 export default uniCrazyRouter;
 declare module "vue/types/vue" {
     interface Vue {
-        $routeParmas?: object | null;
+        $routeParams?: object | null;
         $passedParams?: object | null;
     }
 }
