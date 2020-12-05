@@ -27,6 +27,35 @@ function checkH5NotJump (to) {
     routerStatus.allowAction = true
     // callWithoutNext(onErrorFn, to, routerStatus.current)
 }
+function syncUpdateParams () {
+    let page = getNowPage()
+    if (!('$routeParams' in page)) {
+        page.$routeParams = getParams('routeParams')
+    }
+    page.$passedParams = getParams('passedParams')
+    if (page.$vm) {
+        page.$vm.$passedParams = page.$passedParams
+        if (!('$routeParams' in page.$vm)) {
+            page.$vm.$routeParams = page.$routeParams
+        }
+    }
+}
+
+function watchVmAndSetParams () {
+    // 使用defineProperty监听vue实例是否创建完毕
+    (function () {
+        let vm = undefined
+        Object.defineProperty(getNowPage(), '$vm', {
+            get () {
+                return vm
+            },
+            set (nv) {
+                vm = nv
+                syncUpdateParams()
+            }
+        })
+    })()
+}
 
 // 内部防抖开关
 let waitJumpSucc = false
@@ -138,16 +167,8 @@ async function getAsyncResult (result, to, from, jumpType) {
             // 对navigateBack的特殊处理 或 app-plus
             if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
                 watchAllowAction()
-                let page = getNowPage()
-                if (!('$routeParams' in page)) {
-                    page.$routeParams = getParams('routeParams')
-                }
-                page.$passedParams = getParams('passedParams')
-                if (page.$vm) {
-                    page.$vm.$passedParams = page.$passedParams
-                    if (!('$routeParams' in page.$vm)) {
-                        page.$vm.$routeParams = getParams('routeParams')
-                    }
+                if (env !== 'app-plus') {
+                    syncUpdateParams()
                 }
 
                 // 执行afterEach
@@ -323,17 +344,11 @@ export function intercept (nativeFun, payload={}, jumpType) {
         if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
             payload.success = (...params) => {
                 watchAllowAction()
-                let page = getNowPage()
-                if (!('$routeParams' in page)) {
-                    page.$routeParams = getParams('routeParams')
+
+                if (env !== 'app-plus') {
+                    syncUpdateParams()
                 }
-                page.$passedParams = getParams('passedParams')
-                if (page.$vm) {
-                    page.$vm.$passedParams = page.$passedParams
-                    if (!('$routeParams' in page.$vm)) {
-                        page.$vm.$routeParams = getParams('routeParams')
-                    }
-                }
+
                 // 执行afterEach
                 callWithoutNext(afterEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
@@ -356,7 +371,14 @@ export function intercept (nativeFun, payload={}, jumpType) {
             if (env === 'h5') {
                 h5JumpStatus = 0
             }
+            const lastPageInstance = getNowPage()
             nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
+            // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
+            const currentPageInstance = getNowPage()
+            // weex环境(nvue)
+            if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
+                watchVmAndSetParams()
+            }
             checkH5NotJump(to)
         })()
         return
@@ -376,7 +398,14 @@ export function intercept (nativeFun, payload={}, jumpType) {
         if (env === 'h5') {
             h5JumpStatus = 0
         }
+        const lastPageInstance = getNowPage()
         const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
+        // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
+        const currentPageInstance = getNowPage()
+        // weex环境(nvue)
+        if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
+            watchVmAndSetParams()
+        }
         checkH5NotJump(to)
         return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
@@ -520,7 +549,7 @@ export function bootstrap (Vue, options) {
     Vue.mixin({
         onLoad(){
             // app-plus另外实现
-            if (env === 'app-plus') {
+            if (env === 'app-plus' && !getNowPage().$vm) {
                 return
             }
 
@@ -542,11 +571,7 @@ export function bootstrap (Vue, options) {
             }
             // app-plus另外实现，因为uni的app端，vue.mixin不会混合所有页面
             if (env === 'app-plus') {
-                // APP show
-                if (getCurrentPages().length < 1) {
-                    // 下一次宏任务就是第一个页面的onShow
-                    watchAppIndexReady(readyToAfterEach)
-                }
+                watchAppIndexReady(readyToAfterEach)
                 return
             }
             // 判断是否能获取到页面栈

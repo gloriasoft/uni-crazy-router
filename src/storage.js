@@ -17,6 +17,12 @@ export const afterEachFn = []
 export const onErrorFn = []
 
 /**
+ * 跳转任务队列，用来存储跳转命令
+ * @type {*[]}
+ */
+export const jumpTaskList = []
+
+/**
  * 路由状态集合
  * @type {{allowAction: boolean, routerParams: {}, current: {}, afterNotNext: null}}
  */
