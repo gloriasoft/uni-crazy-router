@@ -27,8 +27,7 @@ function checkH5NotJump (to) {
     routerStatus.allowAction = true
     // callWithoutNext(onErrorFn, to, routerStatus.current)
 }
-function syncUpdateParams () {
-    let page = getNowPage()
+function syncUpdateParams (page = getNowPage()) {
     if (!('$routeParams' in page)) {
         page.$routeParams = getParams('routeParams')
     }
@@ -43,18 +42,71 @@ function syncUpdateParams () {
 
 function watchVmAndSetParams () {
     // 使用defineProperty监听vue实例是否创建完毕
-    (function () {
-        let vm = undefined
-        Object.defineProperty(getNowPage(), '$vm', {
-            get () {
-                return vm
-            },
-            set (nv) {
-                vm = nv
-                syncUpdateParams()
+    let vm = undefined
+    Object.defineProperty(getNowPage(), '$vm', {
+        get () {
+            return vm
+        },
+        set (nv) {
+            vm = nv
+            syncUpdateParams()
+        }
+    })
+}
+
+/**
+ * 为weex(nvue)的页面进行单独处理routeParams和passedParams, 如果不是weex页面则直接运行nativeApply
+ * @param {Function} nativeApply
+ * @returns {Promise<Array>|Function}
+ */
+async function updateParamsForWeex (nativeApply, jumpType) {
+    const lastPageInstance = getNowPage()
+    let targetIsWeex = false
+    let originPassedParams = routerStatus.passedParams
+    let originRouteParams = routerStatus.routeParams
+    let prevPageInstance
+    function restoreParams () {
+        routerStatus.passedParams = originPassedParams
+        routerStatus.routeParams = originRouteParams
+    }
+    // 单独处理navigateBack，因为此方式不需要创建新的页面实例
+    if (jumpType === 'navigateBack') {
+        // 尝试修改参数，并且保存原始参数，在跳转失败时修改回来
+        const pageLength = getCurrentPages().length
+        if (pageLength === 1) {
+            prevPageInstance = lastPageInstance
+        } else {
+            prevPageInstance = getCurrentPages()[pageLength - 2]
+        }
+        // 判断是否weex
+        if (prevPageInstance.$vm && prevPageInstance.$vm._$weex) {
+            targetIsWeex = true
+            // 尝试更新
+            syncUpdateParams(prevPageInstance)
+        }
+        const result = nativeApply()
+        // 如果没有跳转成功，还原参数
+        if (targetIsWeex && result instanceof Promise) {
+            try {
+                if ((await result).length === 1) {
+                    restoreParams()
+                }
+            } catch (e) {
+                restoreParams()
             }
-        })
-    })()
+        } else {
+            return restoreParams
+        }
+        return result
+    }
+    const result = nativeApply()
+    // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
+    const currentPageInstance = getNowPage()
+    // weex环境(nvue)
+    if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
+        watchVmAndSetParams()
+    }
+    return result
 }
 
 // 内部防抖开关
@@ -321,7 +373,9 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
     // 代表回调类型，返回undefined
     if (fail || success || complete) {
+        let restoreParams
         payload.fail = (...params) => {
+            restoreParams instanceof Function && restoreParams()
             // 失败时重置防抖
             routerStatus.allowAction = true
             callWithoutNext(onErrorFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
@@ -371,14 +425,15 @@ export function intercept (nativeFun, payload={}, jumpType) {
             if (env === 'h5') {
                 h5JumpStatus = 0
             }
-            const lastPageInstance = getNowPage()
-            nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
-            // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
-            const currentPageInstance = getNowPage()
-            // weex环境(nvue)
-            if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
-                watchVmAndSetParams()
-            }
+            // const lastPageInstance = getNowPage()
+            //          nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
+            // // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
+            // const currentPageInstance = getNowPage()
+            // // weex环境(nvue)
+            // if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
+            // 	watchVmAndSetParams()
+            // }
+            restoreParams = updateParamsForWeex(() => nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams')), jumpType)
             checkH5NotJump(to)
         })()
         return
@@ -398,14 +453,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         if (env === 'h5') {
             h5JumpStatus = 0
         }
-        const lastPageInstance = getNowPage()
-        const result = nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
-        // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
-        const currentPageInstance = getNowPage()
-        // weex环境(nvue)
-        if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
-            watchVmAndSetParams()
-        }
+        const result = await updateParamsForWeex(() => nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams')), jumpType)
         checkH5NotJump(to)
         return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
@@ -548,7 +596,7 @@ function checkNativeAction () {
 export function bootstrap (Vue, options) {
     Vue.mixin({
         onLoad(){
-            // app-plus另外实现
+            // app-plus的nvue情况另外实现
             if (env === 'app-plus' && !getNowPage().$vm) {
                 return
             }
