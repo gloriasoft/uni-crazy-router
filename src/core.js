@@ -55,11 +55,19 @@ function watchVmAndSetParams () {
 }
 
 /**
+ * 处理需要特殊处理的参数属性
+ */
+function digestParams (payload) {
+    extractParams(payload, 'passedParams')
+    extractParams(payload, 'routeParams')
+}
+
+/**
  * 为weex(nvue)的页面进行单独处理routeParams和passedParams, 如果不是weex页面则直接运行nativeApply
  * @param {Function} nativeApply
  * @returns {Promise<Array>|Function}
  */
-async function updateParamsForWeex (nativeApply, jumpType) {
+async function updateParamsForWeex (nativeApply, payload = {}, jumpType) {
     const lastPageInstance = getNowPage()
     let targetIsWeex = false
     let originPassedParams = routerStatus.passedParams
@@ -69,6 +77,8 @@ async function updateParamsForWeex (nativeApply, jumpType) {
         routerStatus.passedParams = originPassedParams
         routerStatus.routeParams = originRouteParams
     }
+    // 消费routeParams和passedParams
+    digestParams(payload)
     // 单独处理navigateBack，因为此方式不需要创建新的页面实例
     if (jumpType === 'navigateBack') {
         // 尝试修改参数，并且保存原始参数，在跳转失败时修改回来
@@ -84,7 +94,7 @@ async function updateParamsForWeex (nativeApply, jumpType) {
             // 尝试更新
             syncUpdateParams(prevPageInstance)
         }
-        const result = nativeApply()
+        const result = nativeApply.call(uni, payload)
         // 如果没有跳转成功，还原参数
         if (targetIsWeex && result instanceof Promise) {
             try {
@@ -99,7 +109,7 @@ async function updateParamsForWeex (nativeApply, jumpType) {
         }
         return result
     }
-    const result = nativeApply()
+    const result = nativeApply.call(uni, payload)
     // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
     const currentPageInstance = getNowPage()
     // weex环境(nvue)
@@ -433,7 +443,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
             // if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
             // 	watchVmAndSetParams()
             // }
-            restoreParams = updateParamsForWeex(() => nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams')), jumpType)
+            restoreParams = updateParamsForWeex(nativeFun, payload, jumpType)
             checkH5NotJump(to)
         })()
         return
@@ -453,7 +463,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         if (env === 'h5') {
             h5JumpStatus = 0
         }
-        const result = await updateParamsForWeex(() => nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams')), jumpType)
+        const result = await updateParamsForWeex(nativeFun, payload, jumpType)
         checkH5NotJump(to)
         return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
