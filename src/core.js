@@ -97,6 +97,8 @@ async function updateParamsForWeex (nativeApply, payload = {}, jumpType) {
         const result = nativeApply.call(uni, payload)
         // 如果没有跳转成功，还原参数
         if (targetIsWeex && result instanceof Promise) {
+            // 失败时重置防抖
+            routerStatus.allowAction = true
             try {
                 if ((await result).length === 1) {
                     restoreParams()
