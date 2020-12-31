@@ -1,7 +1,14 @@
 # uni-crazy-router  
 一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子
 
-## 详细文档请访问  
+<img src="https://account.weimob.com/img/logo.svg">  
+
+`微盟营销云技术部前端团队提供技术支持`     
+
+问题反馈QQ群:701697982 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=2DjrpVZL" rel="nofollow"><img src="http://pub.idqqimg.com/wpa/images/group.png" alt="uniapp2wxpack问题反馈群"></a>  
+
+
+## [详细文档请访问](https://github.com/devilwjp/uni-crazy-router)  
 [https://github.com/devilwjp/uni-crazy-router](https://github.com/devilwjp/uni-crazy-router)  
     
 ___
