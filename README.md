@@ -13,6 +13,10 @@
 + 新增路由级别的params参数，不耦合于uni-app自身的页面参数  
 + 对页面跳转进行了防抖防刷新的处理，避免了小程序可以连续疯狂点击触发窗口的问题
      
+## 示例项目  
+[uniapp vue3示例项目](https://github.com/devilwjp/uni-crazy-router-vue3-example)  
+[uniapp vue2示例项目](https://github.com/devilwjp/uni-crazy-router-example)  
+
 ## 安装  
 ```
 npm i uni-crazy-router -S
