@@ -61,6 +61,7 @@ class uniCrazyRouter {
      * @returns {uniCrazyRouter}
      */
     install (Vue, options) {
+        routerStatus.VUE3 = parseInt(Vue.version) === 3
         bootstrap(Vue, options)
         return this
     }

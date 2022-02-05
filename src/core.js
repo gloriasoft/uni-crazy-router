@@ -1,5 +1,5 @@
 import {afterEachFn, beforeEachFn, onErrorFn, routerStatus} from "./storage"
-import url from "url"
+import url from './url-dist'
 
 // 环境判断 用于app端的特殊处理
 const env = process.env.VUE_APP_PLATFORM
@@ -32,6 +32,12 @@ function syncUpdateParams (page = getNowPage()) {
         page.$routeParams = getParams('routeParams')
     }
     page.$passedParams = getParams('passedParams')
+    if (routerStatus.VUE3 && ['app-plus', 'app'].indexOf(env) > -1) {
+        page.$page.$passedParams = page.$passedParams
+        if (!('$routeParams' in page.$page)) {
+            page.$page.$routeParams = page.$routeParams
+        }
+    }
     if (page.$vm) {
         page.$vm.$passedParams = page.$passedParams
         if (!('$routeParams' in page.$vm)) {
@@ -115,8 +121,12 @@ async function updateParamsForWeex (nativeApply, payload = {}, jumpType) {
     // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
     const currentPageInstance = getNowPage()
     // weex环境(nvue)
-    if (env === 'app-plus' && currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
-        watchVmAndSetParams()
+    if (['app-plus', 'app'].indexOf(env) > -1) {
+        if (currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
+            watchVmAndSetParams()
+        } else {
+            syncUpdateParams()
+        }
     }
     return result
 }
@@ -229,9 +239,9 @@ async function getAsyncResult (result, to, from, jumpType) {
             }
 
             // 对navigateBack的特殊处理 或 app-plus
-            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
+            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
                 watchAllowAction()
-                if (env !== 'app-plus') {
+                if (['app-plus', 'app'].indexOf(env) > -1) {
                     syncUpdateParams()
                 }
 
@@ -242,6 +252,9 @@ async function getAsyncResult (result, to, from, jumpType) {
         }
         return newResult
     } catch(e) {
+        // 失败时重置防抖
+        routerStatus.allowAction = true
+        callWithoutNext(onErrorFn, to, from)
         return new Error(e)
     }
 }
@@ -289,12 +302,22 @@ function encodeParamsMapToString (paramsMap) {
  */
 function getPageOptions (page) {
     if (!page) return
+
     // h5的page对象里没有options
     if (env === 'h5') {
-        // 通过$mp.query获取
-        return page.$mp.query
+        if (routerStatus.VUE3) {
+            const urlSearchParams = new URL(page.$page.fullPath, location.origin).searchParams
+            const query = {}
+            urlSearchParams.forEach((val, key) => {
+                query[key] = val
+            })
+            return query
+        } else {
+            // 通过$mp.query获取
+            return page.$mp.query
+        }
     }
-    return page.options
+    return page.options || page.$page?.options || {}
 }
 
 /**
@@ -342,6 +365,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         toUrl = getCurrentPages()[targetIndex].route
         query = getPageOptions(getCurrentPages()[targetIndex])
         search = encodeParamsMapToString(query)
+
         // h5环境uni使用的是vue-router会自动decode
         if (env !== 'h5') {
             query = decodeParamsMap(query)
@@ -349,7 +373,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
     } else {
         // 去除根斜杠
-        toUrl = url.resolve(currentUrl,payload.url||'').replace(/^\/([^\/])/,'$1')
+        toUrl = url.resolve(currentUrl, payload.url||'').replace(/^\/([^\/])/,'$1')
         let tempMatch = toUrl.match(/([^?]+)\?([\s\S]*)/)
         // 去掉query参数
         toUrl = tempMatch && tempMatch[1] || toUrl
@@ -390,7 +414,9 @@ export function intercept (nativeFun, payload={}, jumpType) {
             restoreParams instanceof Function && restoreParams()
             // 失败时重置防抖
             routerStatus.allowAction = true
-            callWithoutNext(onErrorFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
+            if (!params?.[0]?.innerError) {
+                callWithoutNext(onErrorFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
+            }
             if (fail) {
                 return fail.apply(this, params)
             }
@@ -407,16 +433,16 @@ export function intercept (nativeFun, payload={}, jumpType) {
         }
 
         // 对navigateBack的特殊处理 或 app-plus
-        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || env === 'app-plus') {
+        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
             payload.success = (...params) => {
                 watchAllowAction()
 
-                if (env !== 'app-plus') {
+                if (['app-plus', 'app'].indexOf(env) > -1) {
                     syncUpdateParams()
                 }
 
                 // 执行afterEach
-                callWithoutNext(afterEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)
+                callWithoutNext(afterEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
                 if (success) {
                     return success.apply(this, params)
@@ -426,9 +452,10 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
         // 自执行一个async函数
         (async function () {
-            if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
+            if (!await callWithNext(beforeEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)) {
                 payload.fail({
-                    errMsg: 'beforeEach中没有使用next'
+                    errMsg: 'beforeEach中没有使用next',
+                    innerError: 1
                 })
                 callAfterNotNext()
                 return
@@ -453,21 +480,22 @@ export function intercept (nativeFun, payload={}, jumpType) {
 
     // 返回async
     return (async function () {
-        if (!await callWithNext(beforeEachFn, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current)) {
+        if (!await callWithNext(beforeEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)) {
             // 失败时重置防抖
             routerStatus.allowAction = true
             callAfterNotNext()
             return [{
-                errMsg:'beforeEach中没有使用next'
+                errMsg:'beforeEach中没有使用next',
+                innerError: 1
             }]
         }
         waitJumpSucc = true
         if (env === 'h5') {
             h5JumpStatus = 0
         }
-        const result = await updateParamsForWeex(nativeFun, payload, jumpType)
+        const result = updateParamsForWeex(nativeFun, payload, jumpType)
         checkH5NotJump(to)
-        return getAsyncResult (result, to, env === 'app-plus' ? appPlusNowRoute : routerStatus.current, jumpType)
+        return getAsyncResult(result, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
 }
 
@@ -601,6 +629,43 @@ function checkNativeAction () {
 }
 
 /**
+ * afterEach的触发时机函数，用于被页面的生命周期执行
+ * @return void
+ */
+function lifecycleForAfterEach () {
+    // vue3 vite版本 所有vue的组件都将具备onShow生命周期
+    // 所以要做过滤，只接受页面级别
+    if (routerStatus.VUE3 && this.$mpType !== 'page') {
+        return
+    }
+    const readyToAfterEach = () => {
+        watchAllowAction(() => {
+            getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+        })
+        // 执行afterEach
+        const nowRoute = getNowRoute()
+        callWithoutNext(afterEachFn, nowRoute, routerStatus.current)
+        routerStatus.current = nowRoute
+    }
+    // app-plus另外实现，因为uni的app端，vue.mixin不会混合所有页面
+    if (['app-plus', 'app'].indexOf(env) > -1) {
+        watchAppIndexReady(readyToAfterEach)
+        return
+    }
+    // 判断是否能获取到页面栈
+    try {
+        getNowUrl()
+    } catch(e) {
+        return
+    }
+    // 过滤App.vue
+    if (this.globalData) {
+        return
+    }
+    readyToAfterEach()
+}
+
+/**
  * 启动函数，用于在Vue plugin中的install方法中执行
  * @param Vue
  * @param options
@@ -609,7 +674,7 @@ export function bootstrap (Vue, options) {
     Vue.mixin({
         onLoad(){
             // app-plus的nvue情况另外实现
-            if (env === 'app-plus' && !getNowPage().$vm) {
+            if (['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
                 return
             }
 
@@ -619,32 +684,17 @@ export function bootstrap (Vue, options) {
             // }
             // watchAllowAction()
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
+            lifecycleForAfterEach.call(this)
+            lifecycleForAfterEach.called = true
         },
         onShow () {
-            const readyToAfterEach = () => {
-                watchAllowAction(() => {
-                    getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
-                })
-                // 执行afterEach
-                callWithoutNext(afterEachFn, getNowRoute(), routerStatus.current)
-                routerStatus.current = getNowRoute()
-            }
-            // app-plus另外实现，因为uni的app端，vue.mixin不会混合所有页面
-            if (env === 'app-plus') {
-                watchAppIndexReady(readyToAfterEach)
+            // 判断在一次页面生命周期内是否已经被执行过，因为第一次打开页面，onLoad会执行
+            if (lifecycleForAfterEach.called) {
+                lifecycleForAfterEach.called = null
                 return
             }
-            // 判断是否能获取到页面栈
-            try {
-                getNowUrl()
-            } catch(e) {
-                return
-            }
-            // 过滤App.vue
-            if (this.globalData) {
-                return
-            }
-            readyToAfterEach()
+            lifecycleForAfterEach.call(this)
+
         }
     })
 

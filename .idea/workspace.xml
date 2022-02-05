@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="24035160-3d8c-4fa7-b7c4-260fe09ba3de" name="Default Changelist" comment="" />
+    <list default="true" id="24035160-3d8c-4fa7-b7c4-260fe09ba3de" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rollup.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/rollup.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/storage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/storage.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uniCrazyRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/uniCrazyRouter.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/url-dist.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/url-dist.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/url.js" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,6 +24,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
@@ -24,7 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -34,6 +47,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\git\uni-crazy-router\src" />
       <recent name="E:\git\uni-crazy-router" />
       <recent name="E:\git\uni-crazy-router\src" />
       <recent name="E:\git\uni-crazy-router\dist" />
@@ -88,19 +102,25 @@
       <workItem from="1608272888287" duration="4996000" />
       <workItem from="1608643209459" duration="1582000" />
       <workItem from="1609433708647" duration="615000" />
+      <workItem from="1644054580181" duration="1315000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="465" y="196" key="FileChooserDialogImpl" timestamp="1604333511440">
-      <screen x="0" y="0" width="1368" height="882" />
-    </state>
-    <state x="465" y="196" key="FileChooserDialogImpl/0.0.1368.882@0.0.1368.882" timestamp="1604333511440" />
   </component>
 </project>

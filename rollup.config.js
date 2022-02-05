@@ -12,18 +12,18 @@ const path = require('path')
 const env = process.env.BUILD_ENV || 'index'
 
 function getGlobals () {
-    if (env === 'small') {
-        return {
-            url: 'url'
-        }
-    }
+    // if (env === 'small') {
+    //     return {
+    //         url: 'url'
+    //     }
+    // }
     return {}
 }
 
 function getExternal () {
-    if (env === 'small') {
-        return ['url']
-    }
+    // if (env === 'small') {
+    //     return ['url']
+    // }
     return []
 }
 
