@@ -4,7 +4,7 @@
 问题反馈QQ群:701697982 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=2DjrpVZL" rel="nofollow"><img src="http://pub.idqqimg.com/wpa/images/group.png" alt="uniapp2wxpack问题反馈群"></a>  
 
 ## 优势  
-+ 支持uniapp vue3 版本  
++ 支持uniapp vue3 版本(version >= 1.0.0)  
 + uni-crazy-router是一个Vue的插件，安装和使用方便，是一个非常轻量级的路由插件  
 + 不需要配置路由表  
 + 使用的都是uni-app原生的跳转方法，不需要修改成vue-router的方式，直接使用uni.navigateTo等原生方法就可以进行跳转  
