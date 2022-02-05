@@ -2,14 +2,9 @@
 一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子
 
 问题反馈QQ群:701697982 <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=2DjrpVZL" rel="nofollow"><img src="http://pub.idqqimg.com/wpa/images/group.png" alt="uniapp2wxpack问题反馈群"></a>  
-    
-___
-## 注意  
-由于条件限制，仅在H5环境和微信小程序环境、以及app端android和ios环境进行过测试  
-感谢某位网友（QQ:85347325）一起帮忙进行了android和ios环境的测试  
-感谢某位网友（QQ:675147705）一起进行了android设备首页两次返回的bug测试  
-___
+
 ## 优势  
++ 支持uniapp vue3 版本  
 + uni-crazy-router是一个Vue的插件，安装和使用方便，是一个非常轻量级的路由插件  
 + 不需要配置路由表  
 + 使用的都是uni-app原生的跳转方法，不需要修改成vue-router的方式，直接使用uni.navigateTo等原生方法就可以进行跳转  
@@ -25,18 +20,32 @@ npm i uni-crazy-router -S
   
 ## 引入  
 ```javascript
-// 全文件引入(17K)
 import uniCrazyRouter from "uni-crazy-router"
-
-// 小文件引入(8K)（推荐小程序和h5使用，app会报require错误）
-import uniCrazyRouter from "uni-crazy-router/dist/small"
 ```
-
 ___
-## 配置  
+## 配置
 ### 第一步  
-uni-app项目 src/main.js  
+uni-app项目 src/main.js
+#### uniapp vue3版本
 ```javascript
+// vue3 main.js
+import {
+    createSSRApp
+} from "vue";
+import App from "./App.vue";
+import { setupRouter } from './router' // 引入路由
+export function createApp() {
+    const app = createSSRApp(App);
+    // 注册router
+    setupRouter(app)
+    return {
+        app,
+    };
+}
+```  
+#### uniapp vue2版本
+```javascript
+// vue2 main.js
 import Vue from 'vue'
 import App from './App'
 import './router' // 引入路由
@@ -49,7 +58,30 @@ app.$mount()
 ```  
   
 ### 第二步  
-创建src/router/index.js
+创建src/router/index.js  
+#### uniapp vue3版本  
+```javascript
+import uniCrazyRouter from "uni-crazy-router";
+export function setupRouter (app) {
+    // 接收vue3的实例，并注册uni-crazy-router
+    app.use(uniCrazyRouter)
+}
+
+uniCrazyRouter.beforeEach(async (to, from ,next)=>{
+    // 逻辑代码
+    
+    next()
+})
+
+uniCrazyRouter.afterEach((to, from)=>{
+    // 逻辑代码
+})
+
+uniCrazyRouter.onError((to, from)=>{
+    // 逻辑代码
+})
+```  
+#### uniapp vue2版本  
 ```javascript
 import Vue from 'vue'
 import uniCrazyRouter from "uni-crazy-router";
