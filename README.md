@@ -28,7 +28,28 @@ import uniCrazyRouter from "uni-crazy-router"
 ```
 ___
 ## 配置
-### 第一步  
+### uniapp vue3版本H5 production环境下的特殊配置  
+uni-app项目 vite.config.js中需要添加一个插件（插件需要通过npm安装）  
+因为uni vue3 vite在h5的production环境打包时会将uni.navigateTo等原生方法的字面量直接替换成底层函数，导致uni-crazy-router失效  
+插件会恢复uni的5个全局跳转方法名  
+```js
+import { defineConfig } from 'vite'
+import uni from '@dcloudio/vite-plugin-uni'
+import path from 'path'
+import h5ProdEffectPlugin from 'uni-vite-plugin-h5-prod-effect'
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+    uni(),
+    // 对h5 production环境打包时的特殊处理，否则uni-crazy-router在这个环境会异常
+    h5ProdEffectPlugin()
+  ],
+})
+
+```
+
+### 第一步
 uni-app项目 src/main.js
 #### uniapp vue3版本
 ```javascript
@@ -38,6 +59,7 @@ import {
 } from "vue";
 import App from "./App.vue";
 import { setupRouter } from './router' // 引入路由
+
 export function createApp() {
     const app = createSSRApp(App);
     // 注册router
