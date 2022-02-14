@@ -1,8 +1,9 @@
 {
   "name": "uni-vite-plugin-h5-prod-effect",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "针对uni vite h5 production环境下的uni跳转页面的方法会被直接替换掉的处理的vite插件",
   "main": "index.js",
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "typings": "index.d.ts"
 }

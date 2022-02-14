@@ -8,11 +8,14 @@ const fs = require('fs');
  * 必须字面量描述，不能动态描述
  * 使用方式，在uni vite项目的main.js直接引入，否则h5 production环境下需要项目本身自己处理字面量
  */
+function getMainPath (mainFileName) {
+    return path.resolve(process.env.UNI_INPUT_DIR, mainFileName).replace(/\\/g, '/')
+}
 module.exports = function () {
     return {
         load(id, options) {
             if (!(process.env.UNI_PLATFORM === 'h5' && process.env.NODE_ENV === 'production')) return
-            if (id.replace(/\\/g, '/') === path.resolve(process.env.UNI_INPUT_DIR, 'main.js').replace(/\\/g, '/')) {
+            if ([getMainPath('main.js'), getMainPath('main.ts')].indexOf(id.replace(/\\/g, '/')) > -1) {
                 const code = fs.readFileSync(id).toString()
                 return `const navigateTo = uni.navigateTo
 const redirectTo = uni.redirectTo
