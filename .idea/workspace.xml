@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="24035160-3d8c-4fa7-b7c4-260fe09ba3de" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
@@ -115,7 +118,7 @@
       <workItem from="1646273175621" duration="68000" />
       <workItem from="1646273261674" duration="932000" />
       <workItem from="1646759143645" duration="1820000" />
-      <workItem from="1647329390593" duration="7837000" />
+      <workItem from="1647329390593" duration="7964000" />
     </task>
     <servers />
   </component>
