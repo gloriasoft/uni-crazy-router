@@ -2178,7 +2178,7 @@ levelup@^0.18.2:
   resolved "https://registry.yarnpkg.com/levelup/-/levelup-0.18.6.tgz#e6a01cb089616c8ecc0291c2a9bd3f0c44e3e5eb"
   integrity sha1-5qAcsIlhbI7MApHCqb0/DETj5es=
   dependencies:
-    bl "~0.8.1"
+    bl "~1.2.3"
     deferred-leveldown "~0.2.0"
     errno "~0.1.1"
     prr "~0.0.0"
