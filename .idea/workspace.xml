@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24035160-3d8c-4fa7-b7c4-260fe09ba3de" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect/index.d.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/core.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +32,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/uni-vite-plugin-h5-prod-effect" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -104,7 +102,13 @@
       <workItem from="1644663071707" duration="8875000" />
       <workItem from="1644691336095" duration="58000" />
       <workItem from="1644691424403" duration="864000" />
-      <workItem from="1644852197214" duration="666000" />
+      <workItem from="1644852197214" duration="1349000" />
+      <workItem from="1645753920487" duration="1000" />
+      <workItem from="1646273115559" duration="28000" />
+      <workItem from="1646273175621" duration="68000" />
+      <workItem from="1646273261674" duration="932000" />
+      <workItem from="1646759143645" duration="1820000" />
+      <workItem from="1647329390593" duration="493000" />
     </task>
     <servers />
   </component>

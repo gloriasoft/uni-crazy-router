@@ -677,6 +677,9 @@ export function bootstrap (Vue, options) {
             if (['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
                 return
             }
+            if (routerStatus.VUE3 && this.$mpType !== 'page') {
+                return
+            }
 
             // // 鉴定路由
             // if (!checkRouteTag()) {
