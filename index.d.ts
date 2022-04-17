@@ -32,8 +32,17 @@ interface uniCrazyRouter {
 }
 declare const uniCrazyRouter: uniCrazyRouter;
 export default uniCrazyRouter;
+// for Vue2
 declare module "vue/types/vue" {
     interface Vue {
+        $routeParams?: object | null;
+        $passedParams?: object | null;
+    }
+}
+
+// for Vue3
+declare module '@vue/runtime-core' {
+    interface ComponentCustomProperties {
         $routeParams?: object | null;
         $passedParams?: object | null;
     }
