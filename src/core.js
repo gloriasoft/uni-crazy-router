@@ -239,14 +239,14 @@ async function getAsyncResult (result, to, from, jumpType) {
             }
 
             // 对navigateBack的特殊处理 或 app-plus
-            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
+            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
                 watchAllowAction()
                 if (['app-plus', 'app'].indexOf(env) > -1) {
                     syncUpdateParams()
                 }
 
                 // 执行afterEach
-                callWithoutNext(afterEachFn, to, from)
+                if (!lifecycleForAfterEach.called)callWithoutNext(afterEachFn, to, from)
                 routerStatus.current = getNowRoute()
             }
         }
@@ -433,7 +433,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         }
 
         // 对navigateBack的特殊处理 或 app-plus
-        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
+        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
             payload.success = (...params) => {
                 watchAllowAction()
 
@@ -686,18 +686,34 @@ export function bootstrap (Vue, options) {
             //     return
             // }
             // watchAllowAction()
+
+            if (['app-plus', 'app'].indexOf(env) > -1) {
+                this.__onLoadCalled = true
+            }
+
+
             getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
             lifecycleForAfterEach.call(this)
             lifecycleForAfterEach.called = true
         },
         onShow () {
+            if (['app-plus', 'app'].indexOf(env) > -1 && !this.__onLoadCalled) {
+                return
+            }
+
             // 判断在一次页面生命周期内是否已经被执行过，因为第一次打开页面，onLoad会执行
             if (lifecycleForAfterEach.called) {
                 lifecycleForAfterEach.called = null
                 return
             }
-            lifecycleForAfterEach.call(this)
 
+            lifecycleForAfterEach.call(this)
+            if (['app-plus', 'app'].indexOf(env) > -1) {
+                lifecycleForAfterEach.called = true
+                setTimeout(() => {
+                    lifecycleForAfterEach.called = null
+                })
+            }
         }
     })
 
