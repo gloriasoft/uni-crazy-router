@@ -433,7 +433,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
         }
 
         // 对navigateBack的特殊处理 或 app-plus
-        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
+        if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
             payload.success = (...params) => {
                 watchAllowAction()
 
@@ -442,7 +442,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
                 }
 
                 // 执行afterEach
-                callWithoutNext(afterEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
+                !lifecycleForAfterEach.called && callWithoutNext(afterEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
                 if (success) {
                     return success.apply(this, params)
