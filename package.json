@@ -5,7 +5,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "cross-env BABEL_ENV=rollup rollup -c && node customBuild.js",
-    "build:small": "cross-env BABEL_ENV=rollup BUILD_ENV=small rollup -c && cross-env BUILD_ENV=small node customBuild.js"
+    "build:small": "cross-env BABEL_ENV=rollup BUILD_ENV=small rollup -c && cross-env BUILD_ENV=small node customBuild.js",
+    "deploy": "npm run build && npm run build:small"
   },
   "files": [
     "dist"
