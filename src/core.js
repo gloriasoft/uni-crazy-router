@@ -4,29 +4,30 @@ import url from './url-dist'
 // 环境判断 用于app端的特殊处理
 const env = process.env.VUE_APP_PLATFORM
 // 判断h5是否真的触发跳转了，检测H5的跳转是否执行，因为uni某些情况并不会执行跳转，所以需要做特殊处理，否则不会释放拦截锁
-let h5JumpStatus = 0
-if (env === 'h5') {
-    const nativePushState = history.pushState
-    const nativeReplaceState = history.replaceState
-    history.pushState = function (...args) {
-        h5JumpStatus = 1
-        return nativePushState.apply(this, args)
-    }
-    history.replaceState = function (...args) {
-        h5JumpStatus = 1
-        return nativeReplaceState.apply(this, args)
-    }
-}
-function checkH5NotJump (to) {
-    if (env !== 'h5') return
-    if (h5JumpStatus) {
-        h5JumpStatus = 0
-        return
-    }
-    // 失败时重置防抖
-    routerStatus.allowAction = true
-    // callWithoutNext(onErrorFn, to, routerStatus.current)
-}
+// let h5JumpStatus = 0
+// if (env === 'h5') {
+//     const nativePushState = history.pushState
+//     const nativeReplaceState = history.replaceState
+//     history.pushState = function (...args) {
+//         h5JumpStatus = 1
+//         return nativePushState.apply(this, args)
+//     }
+//     history.replaceState = function (...args) {
+//         h5JumpStatus = 1
+//         return nativeReplaceState.apply(this, args)
+//     }
+// }
+// function checkH5NotJump (to) {
+//     if (env !== 'h5') return
+//     console.log('h5JumpStatus', h5JumpStatus)
+//     if (h5JumpStatus) {
+//         h5JumpStatus = 0
+//         return
+//     }
+//     // 失败时重置防抖
+//     routerStatus.allowAction = true
+//     callWithoutNext(onErrorFn, to, routerStatus.current)
+// }
 function syncUpdateParams (page = getNowPage()) {
     if (!('$routeParams' in page)) {
         page.$routeParams = getParams('routeParams')
@@ -46,6 +47,32 @@ function syncUpdateParams (page = getNowPage()) {
     }
 }
 
+function weexInjectLifecycle(nv) {
+
+    let vueOptions = nv.$options
+    if (routerStatus.VUE3 && nv.$) {
+        vueOptions = nv.$
+    }
+
+    // 注入onload
+    if (!vueOptions.onLoad) vueOptions.onLoad = []
+    if (typeof vueOptions.onLoad === 'function') {
+        vueOptions.onLoad = [vueOptions.onShow]
+    }
+    if (vueOptions.onLoad.indexOf(routerOnLoad) < 0) {
+        vueOptions.onLoad.unshift(routerOnLoad)
+    }
+
+    // 注入onshow
+    if (!vueOptions.onShow) vueOptions.onShow = []
+    if (typeof vueOptions.onShow === 'function') {
+        vueOptions.onShow = [vueOptions.onShow]
+    }
+    if (vueOptions.onShow.indexOf(routerOnShow) < 0) {
+        vueOptions.onShow.unshift(routerOnShow)
+    }
+}
+
 function watchVmAndSetParams () {
     // 使用defineProperty监听vue实例是否创建完毕
     let vm = undefined
@@ -54,8 +81,16 @@ function watchVmAndSetParams () {
             return vm
         },
         set (nv) {
+            weexInjectLifecycle(nv)
+
+            // 注入前一个页面栈
+            const pages = getCurrentPages()
+            const lastPage = pages[pages.length - 2]
+
+            if (lastPage) {
+                weexInjectLifecycle(lastPage.$vm)
+            }
             vm = nv
-            syncUpdateParams()
         }
     })
 }
@@ -66,6 +101,15 @@ function watchVmAndSetParams () {
 function digestParams (payload) {
     extractParams(payload, 'passedParams')
     extractParams(payload, 'routeParams')
+}
+
+function getVUE3AppSetup(originFn) {
+    const newFn = (...args) => {
+        weexInjectLifecycle(args[0])
+        originFn.apply(this, args)
+    }
+    newFn.isInjected = true
+    return newFn
 }
 
 /**
@@ -98,7 +142,7 @@ async function updateParamsForWeex (nativeApply, payload = {}, jumpType) {
         if (prevPageInstance.$vm && prevPageInstance.$vm._$weex) {
             targetIsWeex = true
             // 尝试更新
-            syncUpdateParams(prevPageInstance)
+            // syncUpdateParams(prevPageInstance)
         }
         const result = nativeApply.call(uni, payload)
         // 如果没有跳转成功，还原参数
@@ -122,12 +166,23 @@ async function updateParamsForWeex (nativeApply, payload = {}, jumpType) {
     const currentPageInstance = getNowPage()
     // weex环境(nvue)
     if (['app-plus', 'app'].indexOf(env) > -1) {
-        if (currentPageInstance !== lastPageInstance && !currentPageInstance.$vm) {
-            watchVmAndSetParams()
+        if (!routerStatus.VUE3) {
+            if (!currentPageInstance.$vm) {
+                watchVmAndSetParams()
+            }
         } else {
-            syncUpdateParams()
+            const originFn = currentPageInstance.__setup
+            if (originFn) {
+                if (!originFn.isInjected) {
+                    currentPageInstance.__setup = getVUE3AppSetup(originFn)
+                }
+            } else {
+                // weexInjectLifecycle()
+            }
+
         }
     }
+
     return result
 }
 
@@ -239,14 +294,14 @@ async function getAsyncResult (result, to, from, jumpType) {
             }
 
             // 对navigateBack的特殊处理 或 app-plus
-            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
+            if ((jumpType === 'navigateBack' && getCurrentPages().length === 1) || ['app-plus', 'app'].indexOf(env) > -1) {
                 watchAllowAction()
-                if (['app-plus', 'app'].indexOf(env) > -1) {
-                    syncUpdateParams()
-                }
+                // if (['app-plus', 'app'].indexOf(env) > -1) {
+                //     syncUpdateParams()
+                // }
 
                 // 执行afterEach
-                if (!lifecycleForAfterEach.called)callWithoutNext(afterEachFn, to, from)
+                // if (!lifecycleForAfterEach.called)callWithoutNext(afterEachFn, to, from)
                 routerStatus.current = getNowRoute()
             }
         }
@@ -437,12 +492,12 @@ export function intercept (nativeFun, payload={}, jumpType) {
             payload.success = (...params) => {
                 watchAllowAction()
 
-                if (['app-plus', 'app'].indexOf(env) > -1) {
-                    syncUpdateParams()
-                }
+                // if (['app-plus', 'app'].indexOf(env) > -1) {
+                //     syncUpdateParams()
+                // }
 
                 // 执行afterEach
-                !lifecycleForAfterEach.called && callWithoutNext(afterEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
+                // !lifecycleForAfterEach.called && callWithoutNext(afterEachFn, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current)
                 routerStatus.current = getNowRoute()
                 if (success) {
                     return success.apply(this, params)
@@ -461,9 +516,9 @@ export function intercept (nativeFun, payload={}, jumpType) {
                 return
             }
             waitJumpSucc = true
-            if (env === 'h5') {
-                h5JumpStatus = 0
-            }
+            // if (env === 'h5') {
+            //     h5JumpStatus = 0
+            // }
             // const lastPageInstance = getNowPage()
             //          nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
             // // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
@@ -473,7 +528,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
             // 	watchVmAndSetParams()
             // }
             restoreParams = updateParamsForWeex(nativeFun, payload, jumpType)
-            checkH5NotJump(to)
+            // checkH5NotJump(to)
         })()
         return
     }
@@ -490,11 +545,11 @@ export function intercept (nativeFun, payload={}, jumpType) {
             }]
         }
         waitJumpSucc = true
-        if (env === 'h5') {
-            h5JumpStatus = 0
-        }
+        // if (env === 'h5') {
+        //     h5JumpStatus = 0
+        // }
         const result = updateParamsForWeex(nativeFun, payload, jumpType)
-        checkH5NotJump(to)
+        // checkH5NotJump(to)
         return getAsyncResult(result, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
 }
@@ -635,13 +690,16 @@ function checkNativeAction () {
 function lifecycleForAfterEach () {
     // vue3 vite版本 所有vue的组件都将具备onShow生命周期
     // 所以要做过滤，只接受页面级别
-    if (routerStatus.VUE3 && this.$mpType !== 'page') {
-        return
-    }
+    // if (routerStatus.VUE3 && this.$mpType !== 'page') {
+    //     return
+    // }
     const readyToAfterEach = () => {
         watchAllowAction(() => {
-            getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+            // getNowPage().$passedParams = this.$passedParams = getParams('passedParams')
+            syncUpdateParams()
         })
+
+
         // 执行afterEach
         const nowRoute = getNowRoute()
         callWithoutNext(afterEachFn, nowRoute, routerStatus.current)
@@ -665,6 +723,32 @@ function lifecycleForAfterEach () {
     readyToAfterEach()
 }
 
+function routerOnLoad() {
+    if (lifecycleForAfterEach.called) {
+        return
+    }
+    lifecycleForAfterEach.call(this)
+    lifecycleForAfterEach.called = true
+    setTimeout(() => {
+        lifecycleForAfterEach.called = null
+    })
+}
+
+function routerOnShow() {
+
+    if (lifecycleForAfterEach.called) {
+        return
+    }
+    lifecycleForAfterEach.call(this)
+    lifecycleForAfterEach.called = true
+    setTimeout(() => {
+        lifecycleForAfterEach.called = null
+    })
+
+}
+
+let isFirstBindOnShow = false
+
 /**
  * 启动函数，用于在Vue plugin中的install方法中执行
  * @param Vue
@@ -672,48 +756,24 @@ function lifecycleForAfterEach () {
  */
 export function bootstrap (Vue, options) {
     Vue.mixin({
-        onLoad(){
-            // app-plus的nvue情况另外实现
-            if (['app-plus', 'app'].indexOf(env) > -1 && !getNowPage().$vm) {
-                return
-            }
-            if (routerStatus.VUE3 && this.$mpType !== 'page') {
-                return
-            }
-
-            // // 鉴定路由
-            // if (!checkRouteTag()) {
-            //     return
-            // }
-            // watchAllowAction()
-
+        onLoad: routerOnLoad,
+        onShow() {
             if (['app-plus', 'app'].indexOf(env) > -1) {
-                this.__onLoadCalled = true
-            }
-
-
-            getNowPage().$routeParams = this.$routeParams = getParams('routeParams')
-            lifecycleForAfterEach.call(this)
-            lifecycleForAfterEach.called = true
-        },
-        onShow () {
-            if (['app-plus', 'app'].indexOf(env) > -1 && !this.__onLoadCalled) {
-                return
-            }
-
-            // 判断在一次页面生命周期内是否已经被执行过，因为第一次打开页面，onLoad会执行
-            if (lifecycleForAfterEach.called) {
-                lifecycleForAfterEach.called = null
-                return
-            }
-
-            lifecycleForAfterEach.call(this)
-            if (['app-plus', 'app'].indexOf(env) > -1) {
-                lifecycleForAfterEach.called = true
                 setTimeout(() => {
-                    lifecycleForAfterEach.called = null
+                    const firstPage = getCurrentPages()[0]
+                    if (routerStatus.VUE3) {
+                        if (firstPage && firstPage.$page && firstPage.$page.meta.isNVue) {
+                            weexInjectLifecycle(firstPage)
+                        }
+                    } else {
+                        if (firstPage && firstPage.$vm && firstPage.$vm._$weex) {
+                            weexInjectLifecycle(firstPage.$vm)
+                        }
+                    }
+
                 })
             }
+            routerOnShow.apply(this)
         }
     })
 
