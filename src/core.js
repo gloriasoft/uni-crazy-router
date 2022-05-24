@@ -19,7 +19,6 @@ const env = process.env.VUE_APP_PLATFORM
 // }
 // function checkH5NotJump (to) {
 //     if (env !== 'h5') return
-//     console.log('h5JumpStatus', h5JumpStatus)
 //     if (h5JumpStatus) {
 //         h5JumpStatus = 0
 //         return
@@ -280,6 +279,7 @@ function callAfterNotNext () {
  * @returns {Promise<*>}
  */
 async function getAsyncResult (result, to, from, jumpType) {
+    lifecycleForAfterEach.called = null
     try {
         let newResult = await result
         if (newResult.length === 1) {
@@ -735,10 +735,10 @@ function routerOnLoad() {
 }
 
 function routerOnShow() {
-
     if (lifecycleForAfterEach.called) {
         return
     }
+
     lifecycleForAfterEach.call(this)
     lifecycleForAfterEach.called = true
     setTimeout(() => {
