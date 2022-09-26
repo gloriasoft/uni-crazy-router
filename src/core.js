@@ -4,29 +4,29 @@ import url from './url-dist'
 // 环境判断 用于app端的特殊处理
 const env = process.env.VUE_APP_PLATFORM
 // 判断h5是否真的触发跳转了，检测H5的跳转是否执行，因为uni某些情况并不会执行跳转，所以需要做特殊处理，否则不会释放拦截锁
-// let h5JumpStatus = 0
-// if (env === 'h5') {
-//     const nativePushState = history.pushState
-//     const nativeReplaceState = history.replaceState
-//     history.pushState = function (...args) {
-//         h5JumpStatus = 1
-//         return nativePushState.apply(this, args)
-//     }
-//     history.replaceState = function (...args) {
-//         h5JumpStatus = 1
-//         return nativeReplaceState.apply(this, args)
-//     }
-// }
-// function checkH5NotJump (to) {
-//     if (env !== 'h5') return
-//     if (h5JumpStatus) {
-//         h5JumpStatus = 0
-//         return
-//     }
-//     // 失败时重置防抖
-//     routerStatus.allowAction = true
-//     callWithoutNext(onErrorFn, to, routerStatus.current)
-// }
+let h5JumpStatus = 0
+if (env === 'h5') {
+    const nativePushState = history.pushState
+    const nativeReplaceState = history.replaceState
+    history.pushState = function (...args) {
+        h5JumpStatus = 1
+        return nativePushState.apply(this, args)
+    }
+    history.replaceState = function (...args) {
+        h5JumpStatus = 1
+        return nativeReplaceState.apply(this, args)
+    }
+}
+function checkH5NotJump (to) {
+    if (env !== 'h5') return
+    if (h5JumpStatus) {
+        h5JumpStatus = 0
+        return
+    }
+    // 失败时重置防抖
+    routerStatus.allowAction = true
+    // callWithoutNext(onErrorFn, to, routerStatus.current)
+}
 function syncUpdateParams (page = getNowPage()) {
     if (!('$routeParams' in page)) {
         page.$routeParams = getParams('routeParams')
@@ -516,9 +516,9 @@ export function intercept (nativeFun, payload={}, jumpType) {
                 return
             }
             waitJumpSucc = true
-            // if (env === 'h5') {
-            //     h5JumpStatus = 0
-            // }
+            if (env === 'h5') {
+                h5JumpStatus = 0
+            }
             // const lastPageInstance = getNowPage()
             //          nativeFun.call(uni, extractParams(extractParams(payload, 'routeParams'), 'passedParams'))
             // // app-plus环境下，在同步执行了跳转方法后，获得的当前页面示例不是跳转前的实例，说明已经打开了页面
@@ -528,7 +528,7 @@ export function intercept (nativeFun, payload={}, jumpType) {
             // 	watchVmAndSetParams()
             // }
             restoreParams = updateParamsForWeex(nativeFun, payload, jumpType)
-            // checkH5NotJump(to)
+            checkH5NotJump(to)
         })()
         return
     }
@@ -545,11 +545,11 @@ export function intercept (nativeFun, payload={}, jumpType) {
             }]
         }
         waitJumpSucc = true
-        // if (env === 'h5') {
-        //     h5JumpStatus = 0
-        // }
+        if (env === 'h5') {
+            h5JumpStatus = 0
+        }
         const result = updateParamsForWeex(nativeFun, payload, jumpType)
-        // checkH5NotJump(to)
+        checkH5NotJump(to)
         return getAsyncResult(result, to, ['app-plus', 'app'].indexOf(env) > -1 ? appPlusNowRoute : routerStatus.current, jumpType)
     })()
 }
