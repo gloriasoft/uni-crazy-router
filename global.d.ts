@@ -5,7 +5,7 @@ declare namespace UniCrazyGlobalTypes {
     }
 }
 
-declare namespace UniApp {
+declare namespace UniNamespace {
     interface RedirectToOptions extends UniCrazyGlobalTypes.UniCrazyRouterParams {}
     interface ReLaunchOptions extends UniCrazyGlobalTypes.UniCrazyRouterParams {}
     interface SwitchTabOptions extends UniCrazyGlobalTypes.UniCrazyRouterParams {}
