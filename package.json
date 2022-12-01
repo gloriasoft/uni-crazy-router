@@ -41,7 +41,8 @@
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^7.0.2",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "regenerator-runtime": "0.12.1"
   },
   "typings": "dist/index.d.ts"
 }
