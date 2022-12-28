@@ -1,13 +1,13 @@
 /// <reference path="./global.d.ts" />
 type to = {
     url: string;
-    query?: object | null;
+    query?: Record<string,any>;
     jumpType: string;
     search?: string;
 } & UniCrazyGlobalTypes.UniCrazyRouterParams;
 type from = ({
     url: string;
-    query?: object | null;
+    query?: Record<string,any>;
     search?: string;
 } & UniCrazyGlobalTypes.UniCrazyRouterParams) | null | undefined;
 interface callWithNext {
@@ -35,15 +35,15 @@ export default uniCrazyRouter;
 // for Vue2
 declare module "vue/types/vue" {
     interface Vue {
-        $routeParams?: object | null;
-        $passedParams?: object | null;
+        $routeParams?: Record<string,any>;
+        $passedParams?: Record<string,any>;
     }
 }
 
 // for Vue3
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
-        $routeParams?: object | null;
-        $passedParams?: object | null;
+        $routeParams?: Record<string,any>;
+        $passedParams?: Record<string,any>;
     }
 }

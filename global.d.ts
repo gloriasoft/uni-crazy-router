@@ -1,7 +1,7 @@
 declare namespace UniCrazyGlobalTypes {
     interface UniCrazyRouterParams {
-        passedParams?: object | null;
-        routeParams?: object | null;
+        passedParams?: Record<string,any>;
+        routeParams?: Record<string,any>;
     }
 }
 
