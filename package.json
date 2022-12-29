@@ -1,6 +1,6 @@
 {
   "name": "uni-crazy-router",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "一个更贴合uni-app的router插件，一切都使用uni-app原生钩子实现和方法实现，抛弃了vue-router的影子",
   "main": "./dist/index.js",
   "scripts": {
